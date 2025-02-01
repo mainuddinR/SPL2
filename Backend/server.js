@@ -3,6 +3,7 @@ import cors from "cors"
 import { connectDB } from "./config/db.js";
 import userRouter from "./routes/userRoute.js";
 import 'dotenv/config'
+import itemRouter from "./routes/itemRoutes.js";
 
 
 
@@ -16,6 +17,10 @@ app.use(cors())
 
 //db connection
 connectDB();
+
+
+//api endpoints
+app.use("/api/item",itemRouter)
 
 //api endpoints
 app.use("/api/user",userRouter)
