@@ -8,10 +8,7 @@ const itemRouter = express.Router();
 //image storage engine
 
 const storage = multer.diskStorage({
-   // destination:"uploads",
-    destination:(req, file, cb) => {
-        cb(null, "uploads"); // Ensure the `uploads` directory exists
-      },
+    destination:"uploads",
     filename:(req,file,cb)=>{
         return cb(null,`${Date.now()}${file.originalname}`)
     }
@@ -19,7 +16,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage:storage})
 
-itemRouter.post("/add",upload.single("image"),addItem)
+itemRouter.post("/add",upload.single("image"),addItem);
+
+
 itemRouter.get("/list",listItem)
 itemRouter.post("/remove",removeItem);
 
