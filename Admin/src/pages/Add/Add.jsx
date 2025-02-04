@@ -4,7 +4,7 @@ import { assets } from '../../assets/assets'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-const Add = () => {
+const Add = ({url}) => {
 
   const [image,setImage] = useState(false);
   const [data,setData] = useState({
@@ -19,9 +19,7 @@ const Add = () => {
     const value = event.target.value;
     setData(data=>({...data,[name]:value}));
   }
-
-  const url='http://localhost:4000';
-
+  
   const onSubmitHandler = async (event) => {
         event.preventDefault();
         const formData = new FormData();

@@ -1,4 +1,4 @@
-import itemModel from "../models/itemModel.js"
+import itemModel from "../models/AdminModel.js"
 import fs from 'fs'
 
 //add fooditem
