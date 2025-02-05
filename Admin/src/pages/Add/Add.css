@@ -2,7 +2,7 @@
     width:70%;
     margin-left: max(5vw,25px);
     margin-top: 50px;
-    color:rgb(125, 120, 120);
+    color:rgb(112, 108, 108);
     font-size:17px;
 }
 .add form{
@@ -12,10 +12,10 @@
     width:120px;
 }
 .add-product-name, .add-product-description{
-    width:max(40%,280px);  
+    width:max(40%,270px);  
 }
 .add-product-name input, .add-product-description textarea{
-    padding: 10px;
+    padding: 11px;
 }
 .add-category-price{
     display: flex;
