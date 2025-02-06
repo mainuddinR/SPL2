@@ -4,6 +4,11 @@ import bcrypt from "bcrypt"
 import validator from "validator";
 
 
+// //Generate JWT token
+// const createToken = (id) => {
+//     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+// };
+
 //login user
 const loginUser = async (req,res) => {
     const {email,password} = req.body;
@@ -71,4 +76,47 @@ const registerUser = async (req,res) => {
     }
 }
 
-export {loginUser,registerUser}
+// Get User Profile
+const getUserProfile = async (req, res) => {
+    try {
+      const user = await userModel.findById(req.body.id);
+      res.json({success:true,data:user});
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: "Server Error" });
+    }
+  };
+  
+  // Update User Profile
+  const updateUserProfile = async (req, res) => {
+    try {
+      const updatedUser = await userModel.findByIdAndUpdate(req.user.id, req.body, { new: true }).select('password');
+      res.json(updatedUser);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: "Server Error" });
+    }
+  };
+  
+  // Update Password
+  const updatePassword = async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    try {
+      const user = await userModel.findById(req.user.id);
+      if (!user) return res.status(404).json({ success: false, message: "User not found" });
+  
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) return res.status(400).json({ success: false, message: "Incorrect current password" });
+  
+      user.password = await bcrypt.hash(newPassword, 10);
+      await user.save();
+  
+      res.json({ success: true, message: "Password updated successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: "Server Error" });
+    }
+  };
+  
+  export { loginUser, registerUser, getUserProfile, updateUserProfile, updatePassword };
+  

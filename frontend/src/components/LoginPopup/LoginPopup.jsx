@@ -4,7 +4,7 @@ import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
 import axios from "axios"
 
-const LoginPopup = ({setShowLogin}) => {
+const LoginPopup = ({setShowLogin , setUser}) => {
 
     const {url,setToken} = useContext(StoreContext);
 
@@ -35,6 +35,8 @@ const LoginPopup = ({setShowLogin}) => {
 
         if(response.data.success){
             setToken(response.data.token);
+            //setUser(response.data);
+            //console.log(response.data);
             localStorage.setItem("token",response.data.token);
             setShowLogin(false);
         }

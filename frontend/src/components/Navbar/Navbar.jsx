@@ -47,7 +47,7 @@ const Navbar = ({ setShowLogin }) => {
           </div>
           <div className="dropdown-menu" id="dropdownMenu">
             <a href="#"><span>📋</span> Orders & reordering</a>
-            <a href="#"><span>👤</span> Profile</a>
+            <Link to="/profile"><span>👤</span> Profile</Link>
             <a href="#"><span>🎫</span> Vouchers</a>
             <a href="#"><span>❓</span> Help center</a>
             <a onClick={logout}><span>🚪</span> Logout</a>
