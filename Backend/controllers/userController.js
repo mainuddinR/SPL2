@@ -86,6 +86,17 @@ const getUserProfile = async (req, res) => {
       res.status(500).json({ success: false, message: "Server Error" });
     }
   };
+  //get all user
+  const getUserList =async (req,res)  =>{
+      try{
+        const users = await userModel.find({});
+        res.json({success:true,data:users});
+      }
+      catch(error){
+        console.log(error);
+        res.json({success:false,message:"Error"});
+      }
+  }
   
   // Update User Profile
   const updateUserProfile = async (req, res) => {
@@ -118,5 +129,5 @@ const getUserProfile = async (req, res) => {
     }
   };
   
-  export { loginUser, registerUser, getUserProfile, updateUserProfile, updatePassword };
+  export { loginUser, registerUser, getUserProfile, updateUserProfile, updatePassword ,getUserList};
   

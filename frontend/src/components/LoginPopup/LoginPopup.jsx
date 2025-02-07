@@ -4,9 +4,9 @@ import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
 import axios from "axios"
 
-const LoginPopup = ({setShowLogin , setUser}) => {
+const LoginPopup = ({setShowLogin}) => {
 
-    const {url,setToken} = useContext(StoreContext);
+    const {url,setToken,setCurrentUser} = useContext(StoreContext);
 
     const [currState,setCurrState] = useState("Login")
     const [data,setData] = useState({
@@ -19,6 +19,9 @@ const LoginPopup = ({setShowLogin , setUser}) => {
         const name = event.target.name;
         const value = event.target.value;
         setData(data =>({...data,[name]:value}))
+        if(name==='email'){
+          setCurrentUser(value);
+        }
     }
 
     const onLogin = async (event) => {
