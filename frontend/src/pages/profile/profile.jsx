@@ -10,8 +10,8 @@ const Profile = () => {
     name: '',
     phone: '',
     address: ''
-});
-  const { token, setToken, userlist, currentUser,url } = useContext(StoreContext);  // Access token from context
+  });
+  const { token, userlist, currentUser, url, userProfile } = useContext(StoreContext);  // Access token from context
 
   let userID;
   let cUser;
@@ -21,6 +21,52 @@ const Profile = () => {
       cUser = element;
     }
   });
+  //new add for get info
+  //const token = localStorage.getItem('token'); // Get token from localStorage
+
+  // useEffect(() => {
+  //   const fetchUserProfile = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:4000/api/user/profile', {
+  //         headers: {
+  //           token: token, // Sending token in the 'token' header
+  //         },
+  //       });
+  //       setUserData(response.data.data);
+  //       console.log(response.data.data);
+  //     } catch (error) {
+  //       console.error('Error fetching user profile:', error);
+  //     }
+  //   };
+
+  //   if (token) {
+  //     fetchUserProfile();
+  //   }
+  // }, [token]);
+
+  //const [userProfile, setUserProfile] = useState(null); 
+
+  const fetchUserProfile = async () => {
+    if (token) {
+      try {
+        const response = await axios.get(`${url}/api/user/profile`, {
+          headers: { token }
+        });
+        setUserData(response.data.data);  // Set the user's profile in the context
+        //console.log(response.data.data);
+      } catch (error) {
+        console.error("Error fetching user profile", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      fetchUserProfile();  // Fetch the user profile when the token is set
+    }
+  }, [token]);
+
+  //end
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -29,22 +75,20 @@ const Profile = () => {
   };
 
   const handleSave = async () => {
-    console.log(cUser);
-
-    if(user.name==='') user.name=cUser.name;
-    if(user.phone==='') user.phone=cUser.phone;
-    if(user.address==='') user.address=cUser.address;
-    console.log('something');
+    if (user.name === '') user.name = userData.name;
+    if (user.phone === '') user.phone = userData.phone;
+    if (user.address === '') user.address = userData.address;
     try {
       const response = await axios.post(
         `${url}/api/user/profile_update`,
-        {user},
+        { user },
         {
           headers: { token },
         }
       );
       if (response.data.success) {
-        console.log(`${section} updated successfully!`);
+        //localStorage.setItem("token",token);
+        // console.log(`${section} updated successfully!`);
       } else {
         console.log("Failed to update the profile");
       }
@@ -56,44 +100,51 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <h2>My Profile</h2>
-      <div className="profile-section">
-        <label type="name">Name</label>
-        <input
-          type="text"
-          name="name"
-          placeholder={cUser.name}
-          onChange={handleChange}
-        />
+      {userData ? (
+        <div>
+          <div className="profile-section">
+            <label>Name</label>
+            <input
+              type="text"
+              name="name"
+              //placeholder={userData.name}
+               value={userData.name}
+              onChange={handleChange}
+            />
 
-        <label>Mobile Number</label>
-        <input
-          type="text"
-          name="phone"
-          placeholder={cUser.phone}
-          onChange={handleChange}
-        />
+            <label>Mobile Number</label>
+            <input
+              type="text"
+              name="phone"
+              value={userData.phone}
+              onChange={handleChange}
+            />
 
-        <label>Address</label>
-        <input
-          type="text"
-          name="address"
-          placeholder={cUser.address}
-          onChange={handleChange}
-        />
+            <label>Address</label>
+            <input
+              type="text"
+              name="address"
+              value={userData.address}
+              onChange={handleChange}
+            />
 
-        <button onClick={handleSave}>Save</button>
-      </div>
+            <button onClick={handleSave}>Save</button>
+          </div>
 
-      <div className="profile-section">
-        <h3>Email</h3>
-        <input
-          type="email"
-          name="email"
-          value={cUser.email}
-          readOnly
-        />
-        <button disabled>Verified</button>
-      </div>
+          <div className="profile-section">
+            <h3>Email</h3>
+            <input
+              type="email"
+              name="email"
+              value={userData.email||''}
+              readOnly
+            />
+            <button disabled>Verified</button>
+          </div>
+        </div>
+      ) : (
+        <p>Loading profile...</p> 
+      )}
 
       <div className="profile-section">
         <h3>Password</h3>

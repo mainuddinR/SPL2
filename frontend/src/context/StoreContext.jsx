@@ -52,8 +52,18 @@ const StoreContextProvider = (props) => {
     //user List
     const [userlist,setUserList] = useState([]);
     const fetchUserList = async() =>{
-        const response = await axios.get(`${url}/api/user/userlist`);
-        setUserList(response.data.data);
+        try{
+            const response = await axios.get(`${url}/api/user/userlist`);
+            if(response.data.success){
+                setUserList(response.data.data);
+            }
+            else{
+                console.log("userList not store");
+            }   
+        }
+        catch(error){
+            console.log(error);
+        }  
     }
     useEffect(()=>{
         fetchUserList();
@@ -71,27 +81,27 @@ const StoreContextProvider = (props) => {
     }
 
 //new
-const [userProfile, setUserProfile] = useState(null); 
+// const [userProfile, setUserProfile] = useState(null); 
 
-    const fetchUserProfile = async () => {
-        if (token) {
-            try {
-                const response = await axios.get(`${url}/api/user/profile`, {
-                    headers: { token }
-                });
-                setUserProfile(response.data.data);  // Set the user's profile in the context
-            } catch (error) {
-                console.error("Error fetching user profile", error);
-            }
-        }
-    };
+//     const fetchUserProfile = async () => {
+//         if (token) {
+//             try {
+//                 const response = await axios.get(`${url}/api/user/profile`, {
+//                     headers: { token }
+//                 });
+//                 setUserProfile(response.data.data);  // Set the user's profile in the context
+//             } catch (error) {
+//                 console.error("Error fetching user profile", error);
+//             }
+//         }
+//     };
 
-    useEffect(() => {
-        if (token) {
-            fetchUserProfile();  // Fetch the user profile when the token is set
-            console.log(userProfile);
-        }
-    }, [token]);
+//     useEffect(() => {
+//         if (token) {
+//             fetchUserProfile();  // Fetch the user profile when the token is set
+//             //console.log(userProfile);
+//         }
+//     }, [token]);
 
     //end
 
@@ -116,7 +126,7 @@ const [userProfile, setUserProfile] = useState(null);
         url,
         token,
         setToken,
-        userProfile,
+        //userProfile,
         userlist,
         setCurrentUser,
         currentUser

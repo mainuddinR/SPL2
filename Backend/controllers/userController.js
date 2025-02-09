@@ -76,16 +76,21 @@ const registerUser = async (req,res) => {
     }
 }
 
-// Get User Profile
 const getUserProfile = async (req, res) => {
-    try {
-      const user = await userModel.findById(req.body.id);
-      res.json({success:true,data:user});
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: "Server Error" });
+  try {
+    const user = await userModel.findById(req.body.userId); // Get user ID from middleware
+    //console.log(user);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
     }
-  };
+    res.json({ success: true, data: user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+};
+
+
   //get all user
   const getUserList =async (req,res)  =>{
       try{
