@@ -9,6 +9,6 @@ userRouter.post("/login",loginUser)
 userRouter.get("/userlist",getUserList);
 
 userRouter.get("/profile",authMiddleware,getUserProfile);
-userRouter.post("/profile",authMiddleware,updateUserProfile,updatePassword);
+userRouter.post("/profile_update",authMiddleware,updateUserProfile);
 
 export default userRouter;

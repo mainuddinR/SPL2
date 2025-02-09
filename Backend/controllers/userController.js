@@ -100,10 +100,25 @@ const getUserProfile = async (req, res) => {
   
   // Update User Profile
   const updateUserProfile = async (req, res) => {
+    // console.log(req.body);
+    // console.log(req.body.userId);
     try {
-      const updatedUser = await userModel.findByIdAndUpdate(req.user.id, req.body, { new: true }).select('password');
-      res.json(updatedUser);
-    } catch (error) {
+      // const updatedUser = await userModel.findByIdAndUpdate(req.body.userId, req.body, { new: true }).select('password');
+      // console.log(updatedUser);
+
+      //res.json(updatedUser);
+      await userModel.updateOne(
+        {_id:req.body.userId},{
+          $set:{
+            name:req.body.user.name,
+            phone:req.body.user.phone,
+            address:req.body.user.address
+          }
+        }
+      )
+      res.json({success:true,message:"update successfully"})
+      }
+     catch (error) {
       console.error(error);
       res.status(500).json({ success: false, message: "Server Error" });
     }

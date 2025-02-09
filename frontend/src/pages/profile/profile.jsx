@@ -29,12 +29,15 @@ const Profile = () => {
   };
 
   const handleSave = async () => {
-    if(user.name===null) user.name=cUser.name;
-    if(user.phone===null) user.phone=cUser.phone;
-    if(user.address===null) user.address=cUser.address;
+    console.log(cUser);
+
+    if(user.name==='') user.name=cUser.name;
+    if(user.phone==='') user.phone=cUser.phone;
+    if(user.address==='') user.address=cUser.address;
+    console.log('something');
     try {
       const response = await axios.post(
-        `${url}/api/user/profile`,
+        `${url}/api/user/profile_update`,
         {user},
         {
           headers: { token },
@@ -54,7 +57,7 @@ const Profile = () => {
     <div className="profile-container">
       <h2>My Profile</h2>
       <div className="profile-section">
-        <label>Name</label>
+        <label type="name">Name</label>
         <input
           type="text"
           name="name"
@@ -78,7 +81,7 @@ const Profile = () => {
           onChange={handleChange}
         />
 
-        <button onClick={() => handleSave}>Save</button>
+        <button onClick={handleSave}>Save</button>
       </div>
 
       <div className="profile-section">

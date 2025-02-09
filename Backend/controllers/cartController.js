@@ -52,84 +52,84 @@ const getCart = async (req,res) => {
 
 //new alada
 
-exports.addItem = async (req, res) => {
-    try {
-      const { userId, itemId, quantity } = req.body;
-      let cart = await Cart.findOne({ userId });
+// exports.addItem = async (req, res) => {
+//     try {
+//       const { userId, itemId, quantity } = req.body;
+//       let cart = await Cart.findOne({ userId });
   
-      if (!cart) {
-        cart = new Cart({ userId, items: [{ itemId, quantity }] });
-      } else {
-        const existingItem = cart.items.find(item => item.itemId.equals(itemId));
-        if (existingItem) {
-          existingItem.quantity += quantity;
-        } else {
-          cart.items.push({ itemId, quantity });
-        }
-      }
+//       if (!cart) {
+//         cart = new Cart({ userId, items: [{ itemId, quantity }] });
+//       } else {
+//         const existingItem = cart.items.find(item => item.itemId.equals(itemId));
+//         if (existingItem) {
+//           existingItem.quantity += quantity;
+//         } else {
+//           cart.items.push({ itemId, quantity });
+//         }
+//       }
   
-      cart.calculateTotal();
-      await cart.save();
-      res.status(200).json(cart);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  };
+//       cart.calculateTotal();
+//       await cart.save();
+//       res.status(200).json(cart);
+//     } catch (err) {
+//       res.status(500).json({ error: err.message });
+//     }
+//   };
   
-  exports.removeItem = async (req, res) => {
-    try {
-      const { userId, itemId } = req.body;
-      const cart = await Cart.findOne({ userId });
+//   exports.removeItem = async (req, res) => {
+//     try {
+//       const { userId, itemId } = req.body;
+//       const cart = await Cart.findOne({ userId });
   
-      if (cart) {
-        cart.items = cart.items.filter(item => !item.itemId.equals(itemId));
-        cart.calculateTotal();
-        await cart.save();
-        res.status(200).json(cart);
-      } else {
-        res.status(404).json({ message: 'Cart not found' });
-      }
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  };
+//       if (cart) {
+//         cart.items = cart.items.filter(item => !item.itemId.equals(itemId));
+//         cart.calculateTotal();
+//         await cart.save();
+//         res.status(200).json(cart);
+//       } else {
+//         res.status(404).json({ message: 'Cart not found' });
+//       }
+//     } catch (err) {
+//       res.status(500).json({ error: err.message });
+//     }
+//   };
   
-  exports.updateQuantity = async (req, res) => {
-    try {
-      const { userId, itemId, quantity } = req.body;
-      const cart = await Cart.findOne({ userId });
+//   exports.updateQuantity = async (req, res) => {
+//     try {
+//       const { userId, itemId, quantity } = req.body;
+//       const cart = await Cart.findOne({ userId });
   
-      if (cart) {
-        const item = cart.items.find(item => item.itemId.equals(itemId));
-        if (item) {
-          item.quantity = quantity;
-          cart.calculateTotal();
-          await cart.save();
-          res.status(200).json(cart);
-        } else {
-          res.status(404).json({ message: 'Item not found in cart' });
-        }
-      } else {
-        res.status(404).json({ message: 'Cart not found' });
-      }
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  };
+//       if (cart) {
+//         const item = cart.items.find(item => item.itemId.equals(itemId));
+//         if (item) {
+//           item.quantity = quantity;
+//           cart.calculateTotal();
+//           await cart.save();
+//           res.status(200).json(cart);
+//         } else {
+//           res.status(404).json({ message: 'Item not found in cart' });
+//         }
+//       } else {
+//         res.status(404).json({ message: 'Cart not found' });
+//       }
+//     } catch (err) {
+//       res.status(500).json({ error: err.message });
+//     }
+//   };
   
-  exports.getCart = async (req, res) => {
-    try {
-      const { userId } = req.params;
-      const cart = await Cart.findOne({ userId }).populate('items.itemId');
-      if (cart) {
-        res.status(200).json(cart);
-      } else {
-        res.status(404).json({ message: 'Cart not found' });
-      }
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  };
+//   exports.getCart = async (req, res) => {
+//     try {
+//       const { userId } = req.params;
+//       const cart = await Cart.findOne({ userId }).populate('items.itemId');
+//       if (cart) {
+//         res.status(200).json(cart);
+//       } else {
+//         res.status(404).json({ message: 'Cart not found' });
+//       }
+//     } catch (err) {
+//       res.status(500).json({ error: err.message });
+//     }
+//   };
   
 
 //end
