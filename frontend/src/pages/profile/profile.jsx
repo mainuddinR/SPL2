@@ -89,6 +89,7 @@ const Profile = () => {
       if (response.data.success) {
         //localStorage.setItem("token",token);
         // console.log(`${section} updated successfully!`);
+        alert('Information Saved.')
       } else {
         console.log("Failed to update the profile");
       }

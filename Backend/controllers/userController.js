@@ -38,43 +38,48 @@ const createToken = (id) => {
 }
 
 //register user
-const registerUser = async (req,res) => {
-    const {name,password,email} = req.body;
-    try{
-        const exists = await userModel.findOne({email});
-        if(exists){
-            return res.json({success:false,message:"User already exists"})
-        }
-        //validating email format and strong password
-        if(!validator.isEmail(email)){
-            return res.json({success:false,message:"Please enter a valid email"})
-        }
+const registerUser = async (req, res) => {
+  const regUser = req.body;
+  console.log(req.body);
 
-        if(password.length<8){
-            return res.json({success:false, message:"Please enter a strong password"})
-        }
-        
-        //hashing user password
-        const salt = await bcrypt.genSalt(10)
-        const hashedPassword = await bcrypt.hash(password,salt);
+  try {
+      const exists = await userModel.findOne({ email: regUser.email });
+      if (exists) {
+          return res.json({ success: false, message: "User already exists" });
+      }
 
+      if (!validator.isEmail(regUser.email)) {
+          return res.json({ success: false, message: "Please enter a valid email" });
+      }
 
-        const newUser = new userModel({
-            name:name,
-            email:email,
-            password:hashedPassword 
-        })
+      if (regUser.password.length < 8) {
+          return res.json({ success: false, message: "Please enter a strong password" });
+      }
 
-        const user = await newUser.save() //database save
-        const token = createToken(user._id)
-        res.json({success:true,token});
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(regUser.password, salt);
+      regUser.password = hashedPassword;
 
-    }
-    catch(error){
-        console.log(error);
-        res.json({success:false,message:"Error"})
-    }
-}
+      const newUser = new userModel({
+          name: regUser.name,
+          email: regUser.email,
+          password: regUser.password,
+          phone: regUser.phone||'',
+          address: regUser.address||'',
+          role: regUser.role || 'customer' // Default to 'customer' if not provided
+      });
+
+      // Save to the database
+      const user = await newUser.save();
+
+      // Generate JWT token
+      const token = createToken(user._id);
+      res.json({ success: true, token });
+  } catch (error) {
+      console.log(error);
+      res.json({ success: false, message: "Error" });
+  }
+};
 
 const getUserProfile = async (req, res) => {
   try {
