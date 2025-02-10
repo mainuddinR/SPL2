@@ -110,13 +110,7 @@ const getUserProfile = async (req, res) => {
   
   // Update User Profile
   const updateUserProfile = async (req, res) => {
-    // console.log(req.body);
-    // console.log(req.body.userId);
     try {
-      // const updatedUser = await userModel.findByIdAndUpdate(req.body.userId, req.body, { new: true }).select('password');
-      // console.log(updatedUser);
-
-      //res.json(updatedUser);
       await userModel.updateOne(
         {_id:req.body.userId},{
           $set:{
