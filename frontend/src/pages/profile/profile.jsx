@@ -5,68 +5,13 @@ import './profile.css';
 
 const Profile = () => {
 
-  const [userData, setUserData] = useState(null);
+ // const [userData, setUserData] = useState(null);  //because context store
   const [user, setUser] = useState({
     name: '',
     phone: '',
     address: ''
   });
-  const { token, userlist, currentUser, url, userProfile } = useContext(StoreContext);  // Access token from context
-
-  let userID;
-  let cUser;
-  userlist.forEach(element => {
-    if (currentUser === element.email) {
-      userID = element._id;
-      cUser = element;
-    }
-  });
-  //new add for get info
-  //const token = localStorage.getItem('token'); // Get token from localStorage
-
-  // useEffect(() => {
-  //   const fetchUserProfile = async () => {
-  //     try {
-  //       const response = await axios.get('http://localhost:4000/api/user/profile', {
-  //         headers: {
-  //           token: token, // Sending token in the 'token' header
-  //         },
-  //       });
-  //       setUserData(response.data.data);
-  //       console.log(response.data.data);
-  //     } catch (error) {
-  //       console.error('Error fetching user profile:', error);
-  //     }
-  //   };
-
-  //   if (token) {
-  //     fetchUserProfile();
-  //   }
-  // }, [token]);
-
-  //const [userProfile, setUserProfile] = useState(null); 
-
-  const fetchUserProfile = async () => {
-    if (token) {
-      try {
-        const response = await axios.get(`${url}/api/user/profile`, {
-          headers: { token }
-        });
-        setUserData(response.data.data);  // Set the user's profile in the context
-        //console.log(response.data.data);
-      } catch (error) {
-        console.error("Error fetching user profile", error);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (token) {
-      fetchUserProfile();  // Fetch the user profile when the token is set
-    }
-  }, [token]);
-
-  //end
+  const { token,url,userData} = useContext(StoreContext);  // Access token from context
 
   const handleChange = (e) => {
     const name = e.target.name;

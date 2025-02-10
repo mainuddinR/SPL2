@@ -8,6 +8,7 @@ import Footer from './components/Footer/Footer'
 import LoginPopup from './components/LoginPopup/LoginPopup'
 import Profile from './pages/profile/profile'
 
+
 const App = () => {
 
   const [showLogin,setShowLogin] = useState(false)
@@ -16,13 +17,12 @@ const App = () => {
     <>
     {showLogin?<LoginPopup setShowLogin={setShowLogin} />:<></>}
       <div className='app'>
-        <Navbar setShowLogin={setShowLogin} />
+        <Navbar setShowLogin={setShowLogin}/>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/order' element={<PlaceOrder />} />
           <Route path='/profile' element={<Profile/>}/>
-
         </Routes>
       </div>
       <Footer />

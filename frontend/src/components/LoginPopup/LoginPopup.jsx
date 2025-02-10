@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import './LoginPopup.css'
 import { assets } from '../../assets/assets'
 import { StoreContext } from '../../context/StoreContext'
@@ -6,22 +6,42 @@ import axios from "axios"
 
 const LoginPopup = ({setShowLogin}) => {
 
-    const {url,setToken,setCurrentUser} = useContext(StoreContext);
-
-    const [currState,setCurrState] = useState("Login")
+    const {url,setToken,setRole,token} = useContext(StoreContext);
+    const [currState,setCurrState] = useState("Login");
     const [data,setData] = useState({
       name:"",
       email:"",
       password:""
     })
 
+    //new user fatch
+
+    const [userData,setUserData] = useState(null);
+
+    const fetchUserProfile = async () => {
+      if (token) {
+        try {
+          const response = await axios.get(`${url}/api/user/profile`, {
+            headers: { token }
+          });
+          setUserData(response.data.data);  // Set the user's profile in the context
+          setRole(response.data.data.role);
+          console.log(response.data.data.role);
+        } catch (error) {
+          console.error("Error fetching user profile", error);
+        }
+      }
+    };
+  
+
+
     const onChangeHandler = (event) =>{
         const name = event.target.name;
         const value = event.target.value;
         setData(data =>({...data,[name]:value}))
-        if(name==='email'){
-          setCurrentUser(value);
-        }
+        // if(name==='email'){
+        //   setCurrentUser(value);
+        // }
     }
 
     const onLogin = async (event) => {
@@ -45,11 +65,14 @@ const LoginPopup = ({setShowLogin}) => {
           alert(response.data.message)
         }
 
+        
     }
 
-    // useEffect(()=>{
-    //   console.log(data);
-    // },[data])
+
+    //setRole(userData.role);
+
+    //end
+    
 
   return (
     <div className='login-popup'>

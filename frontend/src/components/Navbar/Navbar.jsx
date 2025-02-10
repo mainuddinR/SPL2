@@ -1,16 +1,37 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState,useEffect } from 'react'
 import './Navbar.css'
 import { assets } from '../../assets/assets'
 import { Link, useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
+import axios from 'axios';
 
-const Navbar = ({ setShowLogin }) => {
+const Navbar = ({ setShowLogin}) => {
 
-  const [menu, setMenu] = useState("menu");
-
-  const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
-
+  const [menu, setMenu] = useState("home");
+  const {setToken,setUserData,role,setRole, getTotalCartAmount, token,url} = useContext(StoreContext);
   const navigate = useNavigate();
+
+  //new user fatch
+    const fetchUserProfile = async () => {
+      if (token) {
+        try {
+          const response = await axios.get(`${url}/api/user/profile`, {
+            headers: { token }
+          });
+          setUserData(response.data.data);  // Set the user's profile in the context
+          setRole(response.data.data.role);
+          //console.log(response.data.data.role);
+        } catch (error) {
+          console.error("Error fetching user profile", error);
+        }
+      }
+    };
+    useEffect(() => {
+      if (token) {
+        fetchUserProfile();  // Fetch the user profile when the token is set
+      }
+    }, [token]);
+  
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -50,6 +71,10 @@ const Navbar = ({ setShowLogin }) => {
             <Link to="/profile"><span>👤</span> Profile</Link>
             <a href="#"><span>🎫</span> Vouchers</a>
             <a href="#"><span>❓</span> Help center</a>
+            {/* <a href='../../../admin/main.jsx'><span>⚙️</span>Admin Page</a> */}
+            <span className={role==='customer'? 'active':''}>
+              <a href='http://localhost:5173' target='_blank'><span>⚙️</span>Admin Page</a>
+            </span>
             <a onClick={logout}><span>🚪</span> Logout</a>
           </div>
         </div>}

@@ -40,7 +40,7 @@ const createToken = (id) => {
 //register user
 const registerUser = async (req, res) => {
   const regUser = req.body;
-  console.log(req.body);
+ // console.log(req.body);
 
   try {
       const exists = await userModel.findOne({ email: regUser.email });
