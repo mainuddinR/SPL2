@@ -5,6 +5,7 @@ import userRouter from "./routes/userRoute.js";
 import 'dotenv/config'
 import AdminRouter from "./routes/AdminRoutes.js";
 import cartRouter from "./routes/cartRoute.js";
+import paymentRouter from "./routes/paymentRoute.js";
 
 
 
@@ -25,6 +26,7 @@ app.use("/api/item",AdminRouter)
 app.use("/images",express.static('uploads'))
 app.use("/api/user",userRouter)
 app.use("/api/cart",cartRouter)
+app.use("/api/payments",paymentRouter)
 
 
 app.get("/",(req,res)=>{
