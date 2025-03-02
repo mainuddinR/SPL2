@@ -73,7 +73,7 @@ const Navbar = ({ setShowLogin}) => {
             <a href="#"><span>❓</span> Help center</a>
             {/* <a href='../../../admin/main.jsx'><span>⚙️</span>Admin Page</a> */}
             <span className={role==='customer'? 'active':''}>
-              <a href='http://localhost:5173' target='_blank'><span>⚙️</span>Admin Page</a>
+              <a href='http://localhost:5174/add' target='_blank'><span>⚙️</span>Admin Page</a>
             </span>
             <a onClick={logout}><span>🚪</span> Logout</a>
           </div>
