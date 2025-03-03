@@ -4,7 +4,7 @@ import axios from 'axios';
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
-    const [cartItems, setCartItems] = useState({});
+    const [cartItems, setCartItems] = useState([]);
     const [role, setRole] = useState('');
     const [token, setToken] = useState("");
     const [food_list, setFoodList] = useState([]);
@@ -45,18 +45,34 @@ const StoreContextProvider = (props) => {
     // };
 
 
+    // const fetchCartData = async () => {
+    //     if (!token) return;
+    //     try {
+    //         const response = await axios.get(`${url}/api/cart/${userData?._id}`, { headers: { token } });
+    //         if (response.status === 200) {
+    //             setCartItems(response.data.items);
+    //             setTotalPrice(response.data.totalPrice);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error fetching cart data:", error);
+    //     }
+    // };
+
     const fetchCartData = async () => {
-        if (!token) return;
+        if (!token || !userData?._id) return; // Check if token and userData exist
         try {
-            const response = await axios.get(`${url}/api/cart/${userData?._id}`, { headers: { token } });
+            const response = await axios.get(`${url}/api/cart/${userData._id}`, { 
+                headers: {token}
+            });
             if (response.status === 200) {
                 setCartItems(response.data.items);
                 setTotalPrice(response.data.totalPrice);
             }
         } catch (error) {
-            console.error("Error fetching cart data:", error);
+            console.error("Error fetching cart data:", error.response?.data || error);
         }
     };
+    
     
 
     const addToCart = async (itemId, quantity = 1) => {

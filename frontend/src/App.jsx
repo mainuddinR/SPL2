@@ -8,7 +8,6 @@ import Footer from './components/Footer/Footer'
 import LoginPopup from './components/LoginPopup/LoginPopup'
 import Profile from './pages/profile/profile'
 
-
 const App = () => {
 
   const [showLogin,setShowLogin] = useState(false)
