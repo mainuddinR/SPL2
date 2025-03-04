@@ -81,7 +81,7 @@ const registerUser = async (req, res) => {
         try {
           const response = await axios.post(
             "http://localhost:4000/api/deliveryMan/add",
-            { name: regUser.name, user: user._id, status: "off-time" }
+            { name: regUser.name, user: user._id, status: "inactive" }
           );
           //console.log("Delivery Man Added:", response.data);
         } catch (error) {

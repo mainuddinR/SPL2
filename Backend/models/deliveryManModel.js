@@ -13,8 +13,8 @@ const DeliveryManSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["active", "allocated","off-time"],
-    default: "off-time",
+    enum: ["active", "allocated","inactive"],
+    default: "inactive",
   },
 });
 
