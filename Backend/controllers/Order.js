@@ -83,24 +83,47 @@ const userOrders = async (req,res) => {
       }
 }
 
+//listing orders for admin panel
+const listOrders = async (req,res) => {
+    try{
+      const orders = await orderModel.find({});
+      res.json({success:true,data:orders});
+    }catch(error){
+      console.log(error);
+      res.json({success:false,message:"error"});
+    }
+}
+
+//update order status
+const updateStatus = async (req, res) => {
+      try{
+          await orderModel.findByIdAndUpdate(req.body.orderId,{status:req.body.status})
+          res.json({success:true,message:"Status Updated"})
+      }catch(error){
+        console.log(error);
+        res.json({success:false,message:"Error"});
+
+      }
+}
+
 
 //end
 
-const updateStatus = async (req, res) => {
-  const { orderId } = req.params;
-  const { status } = req.body;
+// const updateStatus = async (req, res) => {
+//   const { orderId } = req.params;
+//   const { status } = req.body;
 
-  try {
-    const order = await orderModel.findByIdAndUpdate(orderId, { status }, { new: true });
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
-    }
+//   try {
+//     const order = await orderModel.findByIdAndUpdate(orderId, { status }, { new: true });
+//     if (!order) {
+//       return res.status(404).json({ message: 'Order not found' });
+//     }
 
-    res.status(200).json({ message: 'Order status updated successfully', order });
-  } catch (error) {
-    res.status(500).json({ message: 'Error updating order status', error });
-  }
-};
+//     res.status(200).json({ message: 'Order status updated successfully', order });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error updating order status', error });
+//   }
+// };
 
 const assignDeliveryPersonnel = async (req, res) => {
   const { orderId } = req.params;
@@ -124,4 +147,4 @@ const assignDeliveryPersonnel = async (req, res) => {
   }
 };
 
-export { updateStatus, assignDeliveryPersonnel,placeOrder,verifyOrder ,userOrders };
+export { updateStatus, assignDeliveryPersonnel,placeOrder,verifyOrder ,userOrders ,listOrders };

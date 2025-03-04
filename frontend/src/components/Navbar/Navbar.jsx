@@ -67,6 +67,7 @@ const Navbar = ({ setShowLogin}) => {
             <span> <img src={assets.profile_icon} alt="" /></span>
           </div>
           <div className="dropdown-menu" id="dropdownMenu">
+            <a href="/myorders"><span><img src={assets.order_icon} width="25px" height="25px" alt="" /></span>Orders</a>
             <a href="#"><span>📋</span> Orders & reordering</a>
             <Link to="/profile"><span>👤</span> Profile</Link>
             <a href="#"><span>🎫</span> Vouchers</a>

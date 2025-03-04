@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './PlaceOrder.css'
 import { StoreContext } from '../../context/StoreContext'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 //import {loadStripe} from '@stripe/stripe-js'
 
 //const stripePromise = loadStripe('pk_test_51Qs6ulPpCsrbPdRYQgyHCyBiBoCdHyW6Pdfw2qURP69QJfHy9nlIl3jrs6O9Hufx074rt0CxqYDWyt85d3vA2lbq00t1yzahHv')
@@ -9,7 +10,7 @@ import axios from 'axios'
 const PlaceOrder = () => {
 
   const { getTotalCartAmount ,cartItems,token,food_list,url } = useContext(StoreContext);
-  const [paymentMethod,setPaymentMethod] =useState('');
+ //const [paymentMethod,setPaymentMethod] =useState('');
   const [data,setData] = useState({
     firstName:"",
     lastName:"",
@@ -68,6 +69,15 @@ const PlaceOrder = () => {
         console.log("Final Order Data:", orderData);
   }
 
+  const navigate=useNavigate();
+
+useEffect(()=>{
+  if(!token){
+      navigate('/cart');
+  }else if(getTotalCartAmount()===0){
+    navigate('/cart');
+  }
+},[token])
   // useEffect(()=>{
   //   console.log(data);
   // },[data]);
