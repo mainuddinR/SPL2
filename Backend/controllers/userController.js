@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import validator from "validator";
+import axios from 'axios';
 
 
 // //Generate JWT token
@@ -74,6 +75,20 @@ const registerUser = async (req, res) => {
 
       // Generate JWT token
       const token = createToken(user._id);
+
+      //If user role is delivery_man
+      if (regUser.role === "delivery_man") {
+        try {
+          const response = await axios.post(
+            "http://localhost:4000/api/deliveryMan/add",
+            { name: regUser.name, user: user._id, status: "off-time" }
+          );
+          //console.log("Delivery Man Added:", response.data);
+        } catch (error) {
+          console.error("Error adding delivery man:", error.response?.data || error.message);
+        }
+      }
+
       res.json({ success: true, token });
   } catch (error) {
       console.log(error);

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './deliveryManAdd.css';
+import { useEffect } from 'react';
 
 const DeliveryManAdd = ({ url }) => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,8 @@ const DeliveryManAdd = ({ url }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+ 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -30,6 +33,9 @@ const DeliveryManAdd = ({ url }) => {
       toast.error(error.response?.data?.message || 'Registration Failed');
     }
   };
+//   useEffect(()=>{
+//   storeUserInfo();
+// },[])
 
   return (
     <div className="delivery-man-add">
