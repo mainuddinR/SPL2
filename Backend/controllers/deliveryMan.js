@@ -60,4 +60,25 @@ const findByUserEmail = async (req, res) => {
     }
   };
 
-export {addDeliveryMan,getAllDeliveryMen,findByUserEmail};
+  const getAssignedOrders = async (req, res) => {
+    try {
+        const userId = req.body.userId; // Authenticated user ID
+
+        // Find the delivery man linked to the user
+        const deliveryMan = await DeliveryMan.findOne({ user: userId });
+
+        if (!deliveryMan) {
+            return res.status(404).json({ success: false, message: "Delivery Man not found" });
+        }
+
+        // Fetch assigned orders
+        const orders = await Order.find({ assignedDeliveryMan: deliveryMan._id });
+
+        res.status(200).json({ success: true, data: orders });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Error fetching orders", error });
+    }
+};
+
+
+export {addDeliveryMan,getAllDeliveryMen,findByUserEmail,getAssignedOrders};

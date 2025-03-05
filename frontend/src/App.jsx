@@ -9,7 +9,8 @@ import LoginPopup from './components/LoginPopup/LoginPopup'
 import Profile from './pages/profile/profile'
 import Verify from './pages/Verify/Verify'
 import MyOrders from './pages/MyOrders/MyOrders'
-//import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import DeliveryManDashboard from './pages/Dashboard/DeliveryManDashboard'
 
 const App = () => {
 
@@ -17,7 +18,7 @@ const App = () => {
 
   return (
     <>
-    {/* <ToastContainer/> */}
+    <ToastContainer/>
     {showLogin?<LoginPopup setShowLogin={setShowLogin} />:<></>}
       <div className='app'>
       
@@ -29,7 +30,7 @@ const App = () => {
           <Route path='/profile' element={<Profile/>}/>
           <Route path='/verify' element={<Verify/>}/>
           <Route path='/myorders' element={<MyOrders/>}/>
-          {/* <Route path='/dashboard' element={<Dashboard/>}/> */}
+          <Route path='/dashboard' element={<DeliveryManDashboard/>}/>
         </Routes>
       </div>
       <Footer />

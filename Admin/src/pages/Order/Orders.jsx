@@ -31,6 +31,27 @@ const Orders = ({url}) => {
      }
   }
 
+  const removeOrder = (orderId) => {
+    setOrders(orders.filter(order => order._id !== orderId));
+  };
+
+const assignDeliveryMan = async (orderId) => {
+  try {
+      const response = await axios.post("http://localhost:4000/api/orders/assignDeliveryMan", { orderId });
+
+      if (response.data.success) {
+          toast.success("Delivery Man Assigned");
+      } else {
+          toast.error(response.data.message);  // Error Message Show করবে
+      }
+  } catch (error) {
+      console.error("Error assigning delivery man:", error.response?.data || error.message);
+      toast.error(error.response?.data?.message || "Failed to assign delivery man");
+  }
+};
+
+
+
   useEffect(()=>{
     fetchAllorders();
   },[]);
@@ -62,11 +83,21 @@ const Orders = ({url}) => {
             </div>
             <p>Item:{order.items.length}</p>
             <p>Amount:{order.amount}</p>
-            <select onChange={(event) => statushandler(event,order._id)} value={order.status}>
+            {/* <select onChange={(event) => statushandler(event,order._id)} value={order.status}>
               <option value="Food Processing">Food Processing</option>
               <option value="Out for delivery">Out for delivery</option>
               <option value="Delivered">Delivered</option>
-            </select>
+            </select> */}
+            {/* <button className='assignDeliveryMan' onClick={() => assignDeliveryMan(order._id)}>Assign Delivery Man</button> */}
+            {order.assignedDeliveryMan ? (
+              <>
+                <p style={{ color: "green", fontWeight: "bold" }}>Delivery Man Assigned</p>
+                <button className='removeOrder' onClick={() => removeOrder(order._id)}>Remove</button>
+              </>
+            ) : (
+              <button className='assignDeliveryMan' onClick={() => assignDeliveryMan(order._id)}>Assign Delivery Man</button>
+            )}
+
           </div>
         ))}
         </div>      

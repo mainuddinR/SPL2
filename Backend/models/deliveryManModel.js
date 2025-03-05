@@ -14,7 +14,7 @@ const DeliveryManSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ["active", "allocated","inactive"],
-    default: "inactive",
+    default: "active",
   },
 });
 
