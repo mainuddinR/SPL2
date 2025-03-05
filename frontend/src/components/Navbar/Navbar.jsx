@@ -78,7 +78,7 @@ const Navbar = ({ setShowLogin}) => {
                 <a href='http://localhost:5173/add' target='_blank'><span>⚙️</span>Admin Page</a>
               </span>
             </span>
-            <span >
+            <span className={role==='admin'? 'active':''}>
                 <a href="/dashboard"><span><img src={assets.courier} alt="" width="25px" height="25px" /></span>Dashboard</a>
             </span>
             <a onClick={logout}><span>🚪</span> Logout</a>

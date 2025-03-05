@@ -1,10 +1,11 @@
-import deliveryManModel from "../models/deliveryManModel.js";
+import deliveryMan from "../models/deliveryManModel.js";
 import userModel from "../models/userModel.js";
+import orderModel from '../models/orderModel.js'
 
 // Get all delivery men
  const getAllDeliveryMen = async (req, res) => {
   try {
-    const deliveryMen = await deliveryManModel.find().populate("user", "name email"); // Populate user info
+    const deliveryMen = await deliveryMan.find().populate("user", "name email"); // Populate user info
     res.status(200).json(deliveryMen);
   } catch (error) {
     res.status(500).json({ message: "Error fetching delivery men", error });
@@ -20,7 +21,7 @@ import userModel from "../models/userModel.js";
       return res.status(400).json({ message: "Name and user ID are required" });
     }
 
-    const newDeliveryMan = new deliveryManModel({ name, user, status });
+    const newDeliveryMan = new deliveryMan({ name, user, status });
     await newDeliveryMan.save();
 
     res.status(201).json({ message: "Delivery man added successfully", data:newDeliveryMan });
@@ -65,14 +66,15 @@ const findByUserEmail = async (req, res) => {
         const userId = req.body.userId; // Authenticated user ID
 
         // Find the delivery man linked to the user
-        const deliveryMan = await DeliveryMan.findOne({ user: userId });
+        const deliveryman = await deliveryMan.findOne({ user: userId });
 
-        if (!deliveryMan) {
+        if (!deliveryman) {
             return res.status(404).json({ success: false, message: "Delivery Man not found" });
         }
 
         // Fetch assigned orders
-        const orders = await Order.find({ assignedDeliveryMan: deliveryMan._id });
+        const orders = await orderModel.find({ assignedDeliveryMan: deliveryman._id });
+        console.log(orders);
 
         res.status(200).json({ success: true, data: orders });
     } catch (error) {
@@ -81,4 +83,28 @@ const findByUserEmail = async (req, res) => {
 };
 
 
-export {addDeliveryMan,getAllDeliveryMen,findByUserEmail,getAssignedOrders};
+const updateDeliveryManStatus = async (req, res) => {
+  try {
+      const { status } = req.body;
+      await deliveryMan.findOneAndUpdate({ user: req.body.userId }, { status });
+      res.json({ success: true, message: "Status updated successfully" });
+  } catch (error) {
+      res.status(500).json({ success: false, message: "Error updating status" });
+  }
+};
+const getStatus =async (req, res) => {
+  try{
+    //const {userId} = req.body;
+    const deliveryman = await deliveryMan.findOne({user:req.body.userId});
+    if (!deliveryman) {
+      return res.json({ success: false, message: "Delivery man not found" });
+    }
+    res.json({success:true,status:deliveryman.status});
+  }catch(error){
+    console.log(error);
+    res.json({success:false,message:"Error"});
+  }
+}
+
+
+export {addDeliveryMan,getAllDeliveryMen,findByUserEmail,getAssignedOrders,updateDeliveryManStatus,getStatus};
