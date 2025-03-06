@@ -3,13 +3,10 @@ import './PlaceOrder.css'
 import { StoreContext } from '../../context/StoreContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-//import {loadStripe} from '@stripe/stripe-js'
-
-//const stripePromise = loadStripe('pk_test_51Qs6ulPpCsrbPdRYQgyHCyBiBoCdHyW6Pdfw2qURP69QJfHy9nlIl3jrs6O9Hufx074rt0CxqYDWyt85d3vA2lbq00t1yzahHv')
 
 const PlaceOrder = () => {
 
-  const { getTotalCartAmount ,cartItems,token,food_list,url } = useContext(StoreContext);
+  const { getTotalCartAmount ,cartItems,token,food_list,url,fetchCartData } = useContext(StoreContext);
   const [paymentMethod,setPaymentMethod] =useState('');
   const [data,setData] = useState({
     firstName:"",
@@ -29,45 +26,94 @@ const PlaceOrder = () => {
     setData(data=>({...data,[name]:value}))
   }
 
-  const placeOrder = async (event) =>{
-        event.preventDefault();
-        let orderItems=[];
-        food_list.map((item)=>{
-          const cartItem=cartItems.find(cart=>cart.itemId._id===item._id);
-          if(cartItem&&cartItem.quantity>0){
-            // let itemInfo =item;
-            // itemInfo["quantity"] = cartItem.quantity;
-            // orderItems.push(itemInfo);
-            orderItems.push({
-              itemId: item._id, 
-              name: item.name,
-              price: item.price,
-              quantity: cartItem.quantity
-          });
-          }
-        });
-        if (orderItems.length === 0) {
-          alert("No items in the cart!");
-          return;
-      }
+  // const placeOrder = async (event) =>{
+  //       event.preventDefault();
+  //       let orderItems=[];
+  //       food_list.map((item)=>{
+  //         const cartItem=cartItems.find(cart=>cart.itemId._id===item._id);
+  //         if(cartItem&&cartItem.quantity>0){
+  //           // let itemInfo =item;
+  //           // itemInfo["quantity"] = cartItem.quantity;
+  //           // orderItems.push(itemInfo);
+  //           orderItems.push({
+  //             itemId: item._id, 
+  //             name: item.name,
+  //             price: item.price,
+  //             quantity: cartItem.quantity
+  //         });
+  //         }
+  //       });
+  //       if (orderItems.length === 0) {
+  //         alert("No items in the cart!");
+  //         return;
+  //     }
 
-        let orderData ={
-          address:data,
-          items:orderItems,
-          amount:getTotalCartAmount()+5,
-        }
-        let response = await axios.post(url+"/api/orders/place",orderData,{headers:{token}});
-        if(response.data.success){
-          const {session_url}=response.data;
+  //       let orderData ={
+  //         address:data,
+  //         items:orderItems,
+  //         amount:getTotalCartAmount()+5,
+  //       }
+  //       let response = await axios.post(url+"/api/orders/place",orderData,{headers:{token}});
+  //       if(response.data.success){
+  //         const {session_url}=response.data;
+  //         window.location.replace(session_url);
+  //       }
+  //       else{
+  //         //alert("Error");
+  //         alert("Order placement failed. Please check your order details.");
+  //         console.log("Server Response:", response.data);
+  //       }
+  //       console.log("Final Order Data:", orderData);
+  // }
+
+
+  const placeOrder = async (event) => {
+    event.preventDefault();
+    let orderItems = [];
+    food_list.map((item) => {
+      const cartItem = cartItems.find(cart => cart.itemId._id === item._id);
+      if (cartItem && cartItem.quantity > 0) {
+        orderItems.push({
+          itemId: item._id,
+          name: item.name,
+          price: item.price,
+          quantity: cartItem.quantity
+        });
+      }
+    });
+  
+    if (orderItems.length === 0) {
+      alert("No items in the cart!");
+      return;
+    }
+  
+    let orderData = {
+      address: data,
+      items: orderItems,
+      amount: getTotalCartAmount() + 5,
+      payment: paymentMethod === "offline" ? false : true, 
+    };
+  
+    try {
+      let response = await axios.post(url + "/api/orders/place", orderData, { headers: { token } });
+  
+      if (response.data.success) {
+        if (paymentMethod === "online") {
+          const { session_url } = response.data;
           window.location.replace(session_url);
+        } else if(paymentMethod==="offline") {
+          alert("Order Placed Successfully! Payment will be collected on delivery.");
+          navigate("/myorders");
         }
-        else{
-          //alert("Error");
-          alert("Order placement failed. Please check your order details.");
-          console.log("Server Response:", response.data);
-        }
-        console.log("Final Order Data:", orderData);
-  }
+      } else {
+        alert("Order placement failed. Please check your order details.");
+      }
+    } catch (error) {
+      console.error("Order Placement Error:", error);
+      //alert("Something went wrong!");
+    }
+  };
+  
 
   const navigate=useNavigate();
 
@@ -82,33 +128,6 @@ useEffect(()=>{
   //   console.log(data);
   // },[data]);
 
-  // const handlePayment = async () => {
-  //   if (paymentMethod === 'online') {
-  //     const stripe = await stripePromise;
-  //     try {
-  //       const response = await fetch('/create-checkout-session', {
-  //         method: 'POST',
-  //         headers: { 'Content-Type': 'application/json' },
-  //         body: JSON.stringify({ cartItems }), // cart items সার্ভারে পাঠাচ্ছি
-  //       });
-
-  //       const session = await response.json();
-
-  //       // Stripe Checkout এ রিডাইরেক্ট
-  //       const { error } = await stripe.redirectToCheckout({ sessionId: session.id });
-
-  //       if (error) {
-  //         console.error('Stripe checkout error:', error);
-  //       }
-  //     } catch (error) {
-  //       console.error('Payment Error:', error);
-  //     }
-  //   } else {
-  //     alert('Payment method not selected');
-  //   }
-  // };
-
-
   return (
     <form onSubmit={placeOrder} className='place-order'>
       <div className="place-order-left">
@@ -117,7 +136,7 @@ useEffect(()=>{
           <input required type="text" onChange={onChangeHandler} value={data.firstName} placeholder='First name' name='firstName' />
           <input required type="text" onChange={onChangeHandler} value={data.lastName} placeholder='Last name' name='lastName' />
         </div>
-        <input required type="text" onChange={onChangeHandler} value={data.email} placeholder='Email address' name='email'/>
+        <input required type="email" onChange={onChangeHandler} value={data.email} placeholder='Email address' name='email'/>
         <input required type="text" onChange={onChangeHandler} value={data.street} placeholder='Street' name='street'/>
         <div className="multi-fields">
           <input required type="text" onChange={onChangeHandler} value={data.city} placeholder='City' name='city'/>
