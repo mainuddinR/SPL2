@@ -12,7 +12,8 @@
 
 import  express  from "express";
 //import cartController from './controllers/cartController.js'
-import { addItemToCart, getCart, removeItemFromCart, updateItemQuantity } from "../controllers/cartController.js";
+import { addItemToCart, addToCartForReorder, getCart, removeItemFromCart, updateItemQuantity } from "../controllers/cartController.js";
+import authMiddleware from "../middleware/auth.js"
 
 const cartRouter = express.Router();
 //const cartController = require('./cartController');
@@ -26,5 +27,7 @@ cartRouter.get("/:userId",getCart);
 cartRouter.post("/add",addItemToCart);
 cartRouter.post("/remove",removeItemFromCart);
 cartRouter.post("/update",updateItemQuantity);
+cartRouter.post("/reorder",authMiddleware,addToCartForReorder);
+
 
 export default cartRouter;

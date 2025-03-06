@@ -157,7 +157,8 @@ const StoreContextProvider = (props) => {
         setRole,
         role,
         setUserData,
-        userData
+        userData,
+        fetchCartData
     };
 
     return (

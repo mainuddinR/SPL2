@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom'
 const PlaceOrder = () => {
 
   const { getTotalCartAmount ,cartItems,token,food_list,url } = useContext(StoreContext);
- //const [paymentMethod,setPaymentMethod] =useState('');
+  const [paymentMethod,setPaymentMethod] =useState('');
   const [data,setData] = useState({
     firstName:"",
     lastName:"",

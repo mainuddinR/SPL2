@@ -200,12 +200,12 @@ const removeItemFromCart = async (req, res) => {
     cart.items = cart.items.filter((i) => i.itemId._id.toString() !== itemId);
 
 
-    console.log("after remove:", cart.items);
+    //console.log("after remove:", cart.items);
 
     // Recalculate total price
     cart.totalPrice = cart.items.reduce((total, i) => {
-      console.log("Total");
-      console.log(total, i, i.itemId.price, i.quantity);
+      //console.log("Total");
+      //console.log(total, i, i.itemId.price, i.quantity);
       return total + i.itemId.price * i.quantity;
     }, 0);
 
@@ -249,4 +249,44 @@ const updateItemQuantity = async (req, res) => {
   }
 };
 
-export { addItemToCart, getCart, removeItemFromCart, updateItemQuantity };
+const addToCartForReorder = async (req, res) => {
+  try {
+    const { items } = req.body;
+    const userId = req.body.userId;
+
+    let unavailableItems = [];
+    let newCartItems = [];
+
+    for (let item of items) {
+      const product = await ItemModel.findById(item.itemId);
+      if (!product) {
+        unavailableItems.push(item.name);
+      } else {
+        newCartItems.push({
+          itemId: product._id,
+          quantity: item.quantity,
+          price: product.price, 
+        });
+      }
+    }
+
+    if (unavailableItems.length > 0) {
+      return res.json({ success: false, unavailableItems });
+    }
+
+    await CartModel.findOneAndDelete({ userId });
+
+    const totalPrice = newCartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
+
+    const newCart = new CartModel({ userId, items: newCartItems, totalPrice });
+    await newCart.save();
+
+    res.json({ success: true, message: "Cart updated successfully!" });
+  } catch (error) {
+    console.error("Error in reorder API:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+
+export { addItemToCart, getCart, removeItemFromCart, updateItemQuantity,addToCartForReorder };
