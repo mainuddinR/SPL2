@@ -11,6 +11,7 @@ import Verify from './pages/Verify/Verify'
 import MyOrders from './pages/MyOrders/MyOrders'
 import { ToastContainer } from 'react-toastify';
 import DeliveryManDashboard from './pages/Dashboard/DeliveryManDashboard'
+import OrderRecord from './pages/RecordOrder/orderRecord'
 
 const App = () => {
 
@@ -31,6 +32,7 @@ const App = () => {
           <Route path='/verify' element={<Verify/>}/>
           <Route path='/myorders' element={<MyOrders/>}/>
           <Route path='/dashboard' element={<DeliveryManDashboard/>}/>
+          <Route path='/past-order' element={<OrderRecord/>}/>
         </Routes>
       </div>
       <Footer />

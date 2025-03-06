@@ -3,7 +3,6 @@ import userModel from '../models/userModel.js';
 import DeliveryMan from '../models/deliveryManModel.js'
 import Stripe from 'stripe'
 
-//video
 const stripe =new Stripe(process.env.STRIPE_SECRET_KEY)
 
 const placeOrder = async (req,res) => {
@@ -74,15 +73,20 @@ const verifyOrder = async (req,res) => {
 } 
 
 //user orders for frontend
-const userOrders = async (req,res) => {
-      try{
-        const orders = await orderModel.find({userId:req.body.userId});
-        res.json({success:true,data:orders});
-      }catch(error){
-        console.log(error);
-        res.json({success:false,message:"Error"});
-      }
-}
+const userOrders = async (req, res) => {
+  try {
+      const orders = await orderModel.find({
+          userId: req.body.userId,
+          status: { $ne: 'Delivered' } 
+      });
+
+      res.json({ success: true, data: orders });
+  } catch (error) {
+      console.log(error);
+      res.json({ success: false, message: "Error" });
+  }
+};
+
 
 //listing orders for admin panel
 const listOrders = async (req,res) => {
@@ -107,119 +111,27 @@ const updateStatus = async (req, res) => {
       }
 }
 
-
-//end
-
-// const updateStatus = async (req, res) => {
-//   const { orderId } = req.params;
-//   const { status } = req.body;
-
-//   try {
-//     const order = await orderModel.findByIdAndUpdate(orderId, { status }, { new: true });
-//     if (!order) {
-//       return res.status(404).json({ message: 'Order not found' });
-//     }
-
-//     res.status(200).json({ message: 'Order status updated successfully', order });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error updating order status', error });
-//   }
-// };
-
-// const assignDeliveryPersonnel = async (req, res) => {
-//   const { orderId } = req.params;
-//   const { deliveryManId } = req.body;
-
-//   try {
-//     // চেক করুন যে ইউজারের role হলো delivery_man
-//     const deliveryMan = await userModel.findById(deliveryManId);
-//     if (!deliveryMan || deliveryMan.role !== 'delivery_man') {
-//       return res.status(400).json({ message: 'Invalid delivery man ID or role' });
-//     }
-
-//     const order = await orderModel.findByIdAndUpdate(orderId, { deliveryManId }, { new: true });
-//     if (!order) {
-//       return res.status(404).json({ message: 'Order not found' });
-//     }
-
-//     res.status(200).json({ message: 'Delivery personnel assigned successfully', order });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error assigning delivery personnel', error });
-//   }
-// };
-
-//  const assignDeliveryMan = async (req, res) => {
-//   try {
-//       const { orderId } = req.body;
-
-//       if (!orderId) {
-//         return res.status(400).json({ success: false, message: "Order ID is required" });
-//     }
-
-//     console.log("Received orderId:", orderId);
-
-//        // Find the order to check if a delivery man is already assigned
-//        const existingOrder = await orderModel.findById(orderId);
-
-//        if (!existingOrder) {
-//            return res.status(404).json({ success: false, message: "Order not found" });
-//        }
-
-//        if (existingOrder.assignedDeliveryMan) {
-//         return res.status(400).json({ success: false, message: "Delivery Man Already Assigned" });
-//     }
-
-//       // Find all active delivery men
-//       const activeDeliveryMen = await DeliveryMan.find({ status: "active" });
-
-//       if (activeDeliveryMen.length === 0) {
-//           return res.status(400).json({ success: false, message: "Delivery Man Busy" });
-//       }
-
-//       // Select a random delivery man
-//       const randomDeliveryMan = activeDeliveryMen[Math.floor(Math.random() * activeDeliveryMen.length)];
-
-//       // Assign delivery man to the order
-//       const order = await orderModel.findByIdAndUpdate(orderId, { assignedDeliveryMan: randomDeliveryMan._id }, { new: true });
-
-//       // Update delivery man status to busy
-//       await DeliveryMan.findByIdAndUpdate(randomDeliveryMan._id, { status: "allocated" });
-
-//       res.status(200).json({ success: true, message: "Delivery Man Assigned", data: order });
-//   } catch (error) {
-//       res.status(500).json({ success: false, message: "Error assigning delivery man", error });
-//   }
-// };
-
 const assignDeliveryMan = async (req, res) => {
   try {
       const { orderId } = req.body;
 
-      // Check if order exists
       const existingOrder = await orderModel.findById(orderId);
       if (!existingOrder) {
           return res.status(404).json({ success: false, message: "Order not found" });
       }
-
-      // Check if order already has a delivery man assigned
       if (existingOrder.assignedDeliveryMan) {
           return res.status(200).json({ success: false, message: "Delivery Man Already Assigned" });
       }
-
-      // Find active delivery men
       const activeDeliveryMen = await DeliveryMan.find({ status: "active" });
 
       if (activeDeliveryMen.length === 0) {
           return res.status(200).json({ success: false, message: "Delivery Man Busy" });
       }
 
-      // Select a random delivery man
       const randomDeliveryMan = activeDeliveryMen[Math.floor(Math.random() * activeDeliveryMen.length)];
 
-      // Assign delivery man to the order
       const order = await orderModel.findByIdAndUpdate(orderId, { assignedDeliveryMan: randomDeliveryMan._id }, { new: true });
 
-      // Update delivery man status to allocated
       await DeliveryMan.findByIdAndUpdate(randomDeliveryMan._id, { status: "allocated" });
 
       res.status(200).json({ success: true, message: "Delivery Man Assigned", data: order });
@@ -229,5 +141,16 @@ const assignDeliveryMan = async (req, res) => {
   }
 };
 
+const pastOrders = async (req, res) => {
+  try {
+      const userId = req.body.userId;
+      const pastOrders = await orderModel.find({ userId, status: "Delivered" }).sort({ date: -1 });
 
-export { updateStatus, assignDeliveryMan,placeOrder,verifyOrder ,userOrders ,listOrders };
+      res.json({ success: true, data: pastOrders });
+  } catch (error) {
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+
+export { updateStatus, assignDeliveryMan,placeOrder,verifyOrder ,userOrders ,listOrders,pastOrders };

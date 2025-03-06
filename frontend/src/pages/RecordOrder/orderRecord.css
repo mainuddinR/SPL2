@@ -1,0 +1,54 @@
+.order-record {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .order-card {
+    display: flex;
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .order-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+  
+  .order-details {
+    margin-left: 15px;
+  }
+  
+  .order-details h3 {
+    margin: 0;
+    font-size: 18px;
+  }
+  
+  .order-details p {
+    margin: 5px 0;
+    color: #666;
+  }
+  
+  .order-details button {
+    background: #e91e63;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .order-details button:hover {
+    background: #d81b60;
+  }
+  

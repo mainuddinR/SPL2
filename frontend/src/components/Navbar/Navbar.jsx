@@ -68,7 +68,7 @@ const Navbar = ({ setShowLogin}) => {
           </div>
           <div className="dropdown-menu" id="dropdownMenu">
             <a href="/myorders"><span><img src={assets.order_icon} width="25px" height="25px" alt="" /></span>Orders</a>
-            <a href="#"><span>📋</span> Orders & reordering</a>
+            <a href="/past-order"><span>📋</span> Orders & reordering</a>
             <Link to="/profile"><span>👤</span> Profile</Link>
             <a href="#"><span>🎫</span> Vouchers</a>
             <a href="#"><span>❓</span> Help center</a>
@@ -77,9 +77,9 @@ const Navbar = ({ setShowLogin}) => {
               <span className={role==='delivery_man'? 'active':''}>
                 <a href='http://localhost:5173/add' target='_blank'><span>⚙️</span>Admin Page</a>
               </span>
-            </span>
-            <span className={role==='admin'? 'active':''}>
+              <span className={role==='admin'? 'active':''}>
                 <a href="/dashboard"><span><img src={assets.courier} alt="" width="25px" height="25px" /></span>Dashboard</a>
+             </span>
             </span>
             <a onClick={logout}><span>🚪</span> Logout</a>
           </div>
