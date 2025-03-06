@@ -8,6 +8,7 @@ import cartRouter from "./routes/cartRoute.js";
 import paymentRouter from "./routes/paymentRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import deliveryManRouter from "./routes/deliveryManRoute.js";
+import feedbackRouter from "./routes/feedbackRoute.js";
 
 
 
@@ -31,6 +32,7 @@ app.use("/api/cart",cartRouter)
 app.use("/api/payments",paymentRouter)
 app.use("/api/orders",orderRouter)
 app.use("/api/deliveryMan",deliveryManRouter);
+app.use("/api/feedback",feedbackRouter);
 
 
 app.get("/",(req,res)=>{

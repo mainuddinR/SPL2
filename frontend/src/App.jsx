@@ -12,6 +12,7 @@ import MyOrders from './pages/MyOrders/MyOrders'
 import { ToastContainer } from 'react-toastify';
 import DeliveryManDashboard from './pages/Dashboard/DeliveryManDashboard'
 import OrderRecord from './pages/RecordOrder/orderRecord'
+import Feedback from './pages/Feedback/Feedback'
 
 const App = () => {
 
@@ -33,6 +34,7 @@ const App = () => {
           <Route path='/myorders' element={<MyOrders/>}/>
           <Route path='/dashboard' element={<DeliveryManDashboard/>}/>
           <Route path='/past-order' element={<OrderRecord/>}/>
+          <Route path='/feedback/:orderId' element={<Feedback/>}/>
         </Routes>
       </div>
       <Footer />
