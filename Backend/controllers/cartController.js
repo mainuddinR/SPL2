@@ -67,7 +67,7 @@ import ItemModel from "../models/AdminModel.js"
 
 const getCart = async (req, res) => {
   try {
-    const userId = req.params.userId; // GET রিকোয়েস্টের জন্য req.params ব্যবহার করুন
+    const userId = req.params.userId; 
 
     if (!userId) {
       return res.status(400).json({ error: "User ID is required" });

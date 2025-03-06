@@ -1,0 +1,141 @@
+/* Feedback.css */
+/* .feedback-container {
+  width: 50%;
+  margin: 50px auto;
+  padding: 20px;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.feedback-container h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.feedback-form label {
+  font-weight: bold;
+  text-align: left;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.feedback-form textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+.feedback-form input:focus,
+.feedback-form textarea:focus {
+  border-color: #ff6347;
+  outline: none;
+}
+
+.submit-btn {
+  background: #ff6347;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: #e5533d;
+}
+
+@media (max-width: 768px) {
+  .feedback-container {
+    width: 90%;
+  }
+} */
+
+.feedback-container {
+    width: 50%;
+    margin: 50px auto;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .feedback-container h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .feedback-form label {
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  .star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 15px;
+  }
+  
+  .star {
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  
+  .star:hover {
+    transform: scale(1.2); /* Slight zoom effect on hover */
+  }
+  
+  .feedback-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: vertical;
+    height: 100px;
+  }
+  
+  .submit-btn {
+    background: #436f2e;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.3s ease;
+  }
+  
+  .submit-btn:hover {
+    background: #624930!important ;
+  }
+  
+  @media (max-width: 768px) {
+    .feedback-container {
+      width: 90%;
+    }
+  }
+  

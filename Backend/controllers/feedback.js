@@ -1,6 +1,5 @@
 import feedbackModel from "../models/feedbackModel.js";
 
-//router.post("/submit", authMiddleware, 
 const feedbackSubmission = async (req, res) => {
     try {
       const { orderId, rating, comments } = req.body;
@@ -11,7 +10,15 @@ const feedbackSubmission = async (req, res) => {
       res.status(500).json({ message: "Error submitting feedback", error });
     }
   };
+ 
+  const getFeedback = async (req, res) => {
+    try {
+      const feedbacks = await feedbackModel.find().populate("userId", "name email")
+      res.json(feedbacks);
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ message: "Error fetching feedback" });
+    }
+  };
 
-
-
-  export {feedbackSubmission};
+  export {feedbackSubmission,getFeedback};

@@ -7,6 +7,7 @@ import List from './pages/List/List'
 import Orders from './pages/Order/Orders'
 import DeliveryManAdd from './pages/deliveryManAdd/deliveryManAdd'
 import { ToastContainer } from 'react-toastify';
+import CustomerFeedback from './pages/CustomerFeedback/CustomerFeedback'
 
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/list" element={<List  url={url}/>} />
           <Route path="/orders" element={<Orders url={url}/>} />
           <Route path="/deliveryManRegister" element={<DeliveryManAdd url={url}/>}/>
+          <Route path='/customer-feedback' element={<CustomerFeedback url={url}/>}/>
         </Routes>
       </div>
     </div>
