@@ -26,47 +26,6 @@ const PlaceOrder = () => {
     setData(data=>({...data,[name]:value}))
   }
 
-  // const placeOrder = async (event) =>{
-  //       event.preventDefault();
-  //       let orderItems=[];
-  //       food_list.map((item)=>{
-  //         const cartItem=cartItems.find(cart=>cart.itemId._id===item._id);
-  //         if(cartItem&&cartItem.quantity>0){
-  //           // let itemInfo =item;
-  //           // itemInfo["quantity"] = cartItem.quantity;
-  //           // orderItems.push(itemInfo);
-  //           orderItems.push({
-  //             itemId: item._id, 
-  //             name: item.name,
-  //             price: item.price,
-  //             quantity: cartItem.quantity
-  //         });
-  //         }
-  //       });
-  //       if (orderItems.length === 0) {
-  //         alert("No items in the cart!");
-  //         return;
-  //     }
-
-  //       let orderData ={
-  //         address:data,
-  //         items:orderItems,
-  //         amount:getTotalCartAmount()+5,
-  //       }
-  //       let response = await axios.post(url+"/api/orders/place",orderData,{headers:{token}});
-  //       if(response.data.success){
-  //         const {session_url}=response.data;
-  //         window.location.replace(session_url);
-  //       }
-  //       else{
-  //         //alert("Error");
-  //         alert("Order placement failed. Please check your order details.");
-  //         console.log("Server Response:", response.data);
-  //       }
-  //       console.log("Final Order Data:", orderData);
-  // }
-
-
   const placeOrder = async (event) => {
     event.preventDefault();
     let orderItems = [];

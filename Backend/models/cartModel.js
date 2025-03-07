@@ -8,6 +8,7 @@ import mongoose from "mongoose";
         quantity: { type: Number, required: true , min:1 },
       },
     ],
+    discount:{ type: Number,required:true, default: 0 },
     totalPrice: { type: Number,required:true, default: 0 },
     createdAt: { type: Date, default: Date.now }
   });  

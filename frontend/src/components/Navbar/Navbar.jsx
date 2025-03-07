@@ -42,14 +42,13 @@ const Navbar = ({ setShowLogin}) => {
     const menu = document.getElementById('dropdownMenu');
     menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
 }
-  //const profileButton=document.getElementById('dropdownMenu');
 
   return (
     <div className='navbar'>
-      {/* <img src={assets.delivery_logo} alt="" className='' /> */}
       <Link to='/'><img src={assets.FoodLogo} alt="" className='logo' /></Link>
       <ul className="navbar-menu">
-        <Link to='/' onClick={() => setMenu("home")} className={menu === "home" ? "active" : ""}>Home</Link>
+        {/* <Link to='#' onClick={() => setMenu("home")} className={menu === "home" ? "active" : ""}>Home</Link> */}
+        <a href="#" onClick={() => setMenu("home")} className={menu === "home" ? "active" : ""}>Home</a>
         <a href='#explore-menu' onClick={() => setMenu("menu")} className={menu === "menu" ? "active" : ""}>Menu</a>
         <a href='#app-download' onClick={() => setMenu("mobile-app")} className={menu === "mobile-app" ? "active" : ""}>Mobile-app</a>
         <a href='#footer' onClick={() => setMenu("contact-us")} className={menu === "contact-us" ? "active" : ""}>contact us</a>
