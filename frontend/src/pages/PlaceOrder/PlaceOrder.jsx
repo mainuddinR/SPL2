@@ -107,6 +107,7 @@ const PlaceOrder = () => {
         }
       } else {
         alert("Order placement failed. Please check your order details.");
+        navigate('/cart');
       }
     } catch (error) {
       console.error("Order Placement Error:", error);

@@ -3,6 +3,8 @@ import orderModel from '../models/orderModel.js';
 import DeliveryMan from '../models/deliveryManModel.js'
 import Stripe from 'stripe'
 import cartModel from '../models/cartModel.js';
+import userModel from '../models/userModel.js';
+import nodemailer from "nodemailer";
 
 const stripe =new Stripe(process.env.STRIPE_SECRET_KEY)
 
@@ -137,6 +139,13 @@ const assignDeliveryMan = async (req, res) => {
       const randomDeliveryMan = activeDeliveryMen[Math.floor(Math.random() * activeDeliveryMen.length)];
 
       const order = await orderModel.findByIdAndUpdate(orderId, { assignedDeliveryMan: randomDeliveryMan._id }, { new: true });
+
+
+      const user = await DeliveryMan.findById(randomDeliveryMan._id).populate("user");
+
+      let transporter = nodemailer.createTransport({ service: "gmail", auth: { user: "mainuddin01718887159@gmail.com", pass: "dxxstvxdnzwvbqww" } });
+
+      await transporter.sendMail({ to: user.user.email, subject: "Order allocated", text: `You are assigned orderId: ${orderId}` });
 
       await DeliveryMan.findByIdAndUpdate(randomDeliveryMan._id, { status: "allocated" });
 

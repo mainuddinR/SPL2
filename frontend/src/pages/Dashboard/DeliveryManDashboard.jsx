@@ -76,38 +76,6 @@ const DeliveryManDashboard = () => {
         }
     };
 
-    // const removeOrder = async (orderId) => {
-    //     if (!token) return;
-    //     try {
-    //         await axios.delete(url + `/api/orders/${orderId}`, {
-    //             headers: { token }
-    //         });
-
-    //         setOrders(prevOrders => prevOrders.filter(order => order._id !== orderId));
-
-    //         await updateStatus("active");
-
-    //         toast.success("Order removed successfully");
-    //     } catch (error) {
-    //         toast.error("Error removing order");
-    //     }
-    // };
-    // const removeOrder = async (orderId) => {
-    //     if (!token) return;
-    //     try {
-    //         await axios.put(url + `/api/orders/remove-deliveryman/${orderId}`, {}, {
-    //             headers: { token }
-    //         });
-    
-    //         setOrders(prevOrders => prevOrders.map(order => 
-    //             order._id === orderId ? { ...order, assignedDeliveryMan: null } : order
-    //         ));
-    
-    //         toast.success("Delivery man removed from order");
-    //     } catch (error) {
-    //         toast.error("Error updating order");
-    //     }
-    // };
     const removeOrder = (orderId) => {
         setOrders(prevOrders => prevOrders.filter(order => order._id !== orderId));
     };
@@ -156,7 +124,7 @@ const DeliveryManDashboard = () => {
 
                         <select onChange={(event) => statushandler(event, order._id)} disabled={order.status === "Delivered"} value={order.status}>
                             <option value="Food Processing" selected={order.status === "Food Processing"}>Food Processing</option>
-                            <option value="Out for delivery" selected={order.status === "Out for delivery"}>Out for delivery</option>
+                            <option value="Out for delivery" selected={order.status === "On delivery"}>On delivery</option>
                             <option value="Delivered" selected={order.status === "Delivered"}>Delivered</option>
                         </select>
 
