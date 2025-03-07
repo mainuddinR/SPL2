@@ -1,0 +1,175 @@
+/* .dashboard-container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+}
+
+.status-section {
+    margin-bottom: 20px;
+}
+
+.status-section button {
+    margin: 5px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.status-section button:hover {
+    background-color: #0056b3;
+}
+
+.orders-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.order-card {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 250px;
+}
+
+.order-card button {
+    margin-top: 10px;
+    padding: 8px;
+    width: 100%;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.order-card button:hover {
+    background-color: #218838;
+} */
+
+
+/* DeliveryManDashboard.css */
+
+.dashboard-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+}
+
+h2, h3 {
+    text-align: center;
+    color: #333;
+}
+
+.status-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.status-section button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.status-section button:hover {
+    background: #0056b3;
+}
+
+.orders-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* .order-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+    transition: 0.3s;
+} */
+
+.order-item:hover {
+    background: #f1f1f1;
+}
+
+.order-item img {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+}
+
+.order-item div {
+    flex-grow: 1;
+}
+
+.order-item p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.order-item select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .order-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .status-section {
+        flex-direction: column;
+    }
+}
+.order-item{
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
+    align-items: start;
+    gap:30px;
+    border:1px solid tan;
+    padding: 20px;
+    margin:30px 0px;
+    font-size: 14px;
+    color: rgb(65, 61, 61);
+}
+.order-item-food, .order-item-name{
+    font-weight: 600;
+}
+.order-item-name{
+    margin-top: 30px;
+    margin-bottom: 5px;
+    color:rgb(138, 208, 72);
+}
+.order-item-address{
+    margin-bottom: 10px;  
+}
+.order-item select{
+    background-color: rgb(241, 238, 235);
+    border:1px solid rgb(116, 158, 37);
+    width:max(10vw, 120px);
+    padding:10px;
+    outline: none;
+}
