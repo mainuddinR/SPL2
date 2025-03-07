@@ -1,5 +1,5 @@
 import  express  from "express";
-import { getUserProfile, loginUser,registerUser, updatePassword, updateUserProfile,getUserList } from "../controllers/userController.js";
+import { getUserProfile, loginUser,registerUser, updatePassword, updateUserProfile,getUserList, sendOtp, verifyOtp } from "../controllers/userController.js";
 import authMiddleware from '../middleware/auth.js';
 
 const userRouter = express.Router()
@@ -11,5 +11,8 @@ userRouter.get("/userlist",getUserList);
 userRouter.get("/profile",authMiddleware,getUserProfile);
 userRouter.post("/profile_update",authMiddleware,updateUserProfile);
 userRouter.post("/password_change",authMiddleware,updatePassword);
+
+userRouter.post("/forgot-password", sendOtp);
+userRouter.post("/verify-otp", verifyOtp);
 
 export default userRouter;

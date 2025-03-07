@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import validator from "validator";
 import axios from 'axios';
-
+import nodemailer from "nodemailer";
 
 // //Generate JWT token
 // const createToken = (id) => {
@@ -162,6 +162,36 @@ const getUserProfile = async (req, res) => {
       res.status(500).json({ success: false, message: "Server Error" });
     }
   };
+
+//respast jonno
+
+const otpStore = {};
+
+const sendOtp = async (req, res) => {
+    const { email } = req.body;
+    const user = await userModel.findOne({ email });
+    if (!user) return res.json({ success: false, message: "Email not found!" });
+
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    otpStore[email] = otp;
+
+    let transporter = nodemailer.createTransport({ service: "gmail", auth: { user: "mainuddin01718887159@gmail.com", pass: "dxxstvxdnzwvbqww" } });
+
+    await transporter.sendMail({ to: email, subject: "Reset Password OTP", text: `Your OTP: ${otp}` });
+    res.json({ success: true });
+};
+
+const verifyOtp = async (req, res) => {
+    const { email, otp, newPassword } = req.body;
+    if (otpStore[email] !== parseInt(otp)) return res.json({ success: false, message: "Invalid OTP!" });
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await userModel.updateOne({ email }, { password: hashedPassword });
+
+    delete otpStore[email];
+    res.json({ success: true });
+};
+
   
-  export { loginUser, registerUser, getUserProfile, updateUserProfile, updatePassword ,getUserList};
+export { loginUser, registerUser, getUserProfile, updateUserProfile, updatePassword ,getUserList,sendOtp,verifyOtp};
   
