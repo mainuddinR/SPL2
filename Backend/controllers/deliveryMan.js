@@ -37,8 +37,6 @@ const findByUserEmail = async (req, res) => {
     if (!email) {
       return res.status(400).json({ success: false, message: "Email is required" });
     }
-
-    // Find the user by email
     const user = await userModel.findOne({ email });
 
     if (!user) {
@@ -47,14 +45,6 @@ const findByUserEmail = async (req, res) => {
 
     res.json({ success: true, data: user });
 
-    // Find delivery man by user ID
-    //   const deliveryMan = await deliveryManModel.findOne({ user: user._id }).populate("user", "name email");
-
-    //   if (!deliveryMan) {
-    //     return res.status(404).json({ message: "Delivery man not found" });
-    //   }
-
-    //res.status(200).json(deliveryMan);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error finding user", error });
@@ -65,29 +55,18 @@ const getAssignedOrders = async (req, res) => {
   try {
     const userId = req.body.userId; // Authenticated user ID
 
-    // Find the delivery man linked to the user
     const deliveryman = await deliveryMan.findOne({ user: userId });
 
     if (!deliveryman) {
       return res.status(404).json({ success: false, message: "Delivery Man not found" });
     }
 
-
-    // Fetch assigned orders
-    // const orders = await orderModel.find({ assignedDeliveryMan: deliveryman._id });
     const orders = await orderModel.find({
       assignedDeliveryMan: deliveryman._id,
-      status: { $ne: 'Delivered' } // Exclude delivered orders
+      status: { $ne: 'Delivered' } 
     });
-    // if(orders.status==='Delivered'){
-    //   res.json({success:true,message:"Alreadey delivered"});
-    //   return;
-    // }
-
+  
     res.status(200).json({ success: true, data: orders });
-
-    //console.log(orders);
-
 
   } catch (error) {
     res.status(500).json({ success: false, message: "Error fetching orders", error });
@@ -106,7 +85,6 @@ const updateDeliveryManStatus = async (req, res) => {
 };
 const getStatus = async (req, res) => {
   try {
-    //const {userId} = req.body;
     const deliveryman = await deliveryMan.findOne({ user: req.body.userId });
     if (!deliveryman) {
       return res.json({ success: false, message: "Delivery man not found" });
