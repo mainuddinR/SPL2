@@ -1,53 +1,82 @@
-// deliveryManAdd.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './deliveryManAdd.css';
-import { useEffect } from 'react';
 
 const DeliveryManAdd = ({ url }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    phone: '',
-    address: ''
+    name: '', email: '', password: '', phone: '', address: '', role: 'delivery_man'
   });
+  const [otp, setOtp] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [timer, setTimer] = useState(300);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
- 
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSendOtp = async () => {
     try {
-      const response = await axios.post(`${url}/api/user/register`, {
-        ...formData,
-        role: 'delivery_man'
-      });
-      toast.success('Delivery Man Registered Successfully!');
-      setFormData({ name: '', email: '', password: '', phone: '', address: '' });
+      await axios.post(`${url}/api/user/sendOtpForRegister`, formData);
+      toast.success('OTP Sent Successfully!');
+      setOtpSent(true);
+      startTimer();
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Registration Failed');
+      console.log(error);
+      //toast.error('Failed to send OTP');
     }
   };
-//   useEffect(()=>{
-//   storeUserInfo();
-// },[])
+
+  const handleVerifyOtp = async () => {
+    try {
+      const response = await axios.post(`${url}/api/user/register`, { email: formData.email, otp });
+      if (response.data.success) {
+        toast.success('Delivery Man Registered Successfully!');
+        setFormData({ name: '', email: '', password: '', phone: '', address: '' });
+        setOtp('');
+        setOtpSent(false);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('OTP Verification Failed');
+    }
+  };
+
+  const startTimer = () => {
+    setTimer(300);
+    const interval = setInterval(() => {
+      setTimer((prev) => {
+        if (prev === 1) {
+          clearInterval(interval);
+          setOtpSent(false);
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
   return (
     <div className="delivery-man-add">
       <h2>Register Delivery Man</h2>
-      <br /> <br />
-      <form onSubmit={handleSubmit} className="delivery-man-form">
+      <form className="delivery-man-form">
         <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
         <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
         <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
-        <input type="text" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required/>
+        <input type="text" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required />
         <input type="text" name="address" placeholder="Address" value={formData.address} onChange={handleChange} />
-        <button type="submit">Register</button>
+        {!otpSent ? (
+          <button type="button" onClick={handleSendOtp}>Registration</button>
+        ) : (
+          <>
+            <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} required />
+            <p className="timer">
+              Time Left: {`${Math.floor(timer / 60)}:${String(timer % 60).padStart(2, '0')}`}s
+            </p>
+            <button type="button" onClick={handleVerifyOtp}>Verify Email</button>
+          </>
+        )}
       </form>
     </div>
   );

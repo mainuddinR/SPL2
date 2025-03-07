@@ -4,14 +4,35 @@ import { StoreContext } from '../../context/StoreContext';
 import './profile.css';
 
 const Profile = () => {
+  
+  const { token,url,userData} = useContext(StoreContext); 
 
- // const [userData, setUserData] = useState(null);  //because context store
   const [user, setUser] = useState({
     name: '',
     phone: '',
     address: ''
   });
-  const { token,url,userData} = useContext(StoreContext);  // Access token from context
+
+  useEffect(() => {
+    if (userData) {
+      setUser({
+        name: userData.name || '',
+        phone: userData.phone || '',
+        address: userData.address || ''
+      });
+    }
+  }, [userData]);
+  
+  const [pass,setPass] = useState({
+    currentPassword:'',
+    newPassword:''
+  })
+
+  const handlePassChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setPass((prevState) => ({ ...prevState, [name]: value }));
+  };
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -32,8 +53,6 @@ const Profile = () => {
         }
       );
       if (response.data.success) {
-        //localStorage.setItem("token",token);
-        // console.log(`${section} updated successfully!`);
         alert('Information Saved.')
       } else {
         console.log("Failed to update the profile");
@@ -42,6 +61,30 @@ const Profile = () => {
       console.error("Error saving profile:", error);
     }
   };
+
+    const updatePassword = async () => {
+      try {
+          const response = await axios.post(
+              `${url}/api/user/password_change`,
+              {
+                  currentPassword: pass.currentPassword,
+                  newPassword: pass.newPassword
+              },
+              {
+                  headers: {token}
+              }
+          );
+  
+          if (response.data.success) {
+              alert("Password changed Successfully");
+          } else {
+              alert(response.data.message);
+          }
+      } catch (error) {
+          console.error("Error updating password:", error.response?.data || error.message);
+      }
+  };
+  
 
   return (
     <div className="profile-container">
@@ -53,8 +96,7 @@ const Profile = () => {
             <input
               type="text"
               name="name"
-              //placeholder={userData.name}
-               value={userData.name}
+               value={user.name}
               onChange={handleChange}
             />
 
@@ -62,7 +104,7 @@ const Profile = () => {
             <input
               type="text"
               name="phone"
-              value={userData.phone}
+              value={user.phone}
               onChange={handleChange}
             />
 
@@ -70,7 +112,7 @@ const Profile = () => {
             <input
               type="text"
               name="address"
-              value={userData.address}
+              value={user.address}
               onChange={handleChange}
             />
 
@@ -98,13 +140,15 @@ const Profile = () => {
           type="password"
           placeholder="Current password"
           name="currentPassword"
+          onChange={handlePassChange}
         />
         <input
           type="password"
           placeholder="New password"
           name="newPassword"
+          onChange={handlePassChange}
         />
-        <button onClick={() => handleSave('Password')}>Save</button>
+        <button onClick={updatePassword}>Save</button>
       </div>
     </div>
   );
