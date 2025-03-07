@@ -70,7 +70,7 @@ const Navbar = ({ setShowLogin}) => {
             <a href="/myorders"><span><img src={assets.order_icon} width="25px" height="25px" alt="" /></span>Orders</a>
             <a href="/past-order"><span>📋</span> Orders & reordering</a>
             <Link to="/profile"><span>👤</span> Profile</Link>
-            <a href="#"><span>🎫</span> Vouchers</a>
+            <a href="/vouchers"><span>🎫</span> Vouchers</a>
             <a href="#"><span>❓</span> Help center</a>
             {/* <a href='../../../admin/main.jsx'><span>⚙️</span>Admin Page</a> */}
             <span className={role==='customer'? 'active':''}>

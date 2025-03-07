@@ -34,9 +34,6 @@ const createToken = (id) => {
 
 //register user
 
-//new
-
-// Register User with OTP
 const otpStore = {};
 
 const sendOtpForRegister = async (req, res) => {
@@ -93,7 +90,6 @@ const registerUser = async (req, res) => {
       role: role || 'customer'
     });
 
-    //const newUser = new userModel({ name, email, password: hashedPassword, role: "customer" });
     const user = await newUser.save();
 
     delete otpStore[email];

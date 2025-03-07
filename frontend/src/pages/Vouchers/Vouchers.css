@@ -1,0 +1,13 @@
+.promo-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(187, 127, 127, 0.1);
+    text-align: center;
+  }
+  .promo-container li{
+    color:rgb(148, 81, 33);
+  }
+  

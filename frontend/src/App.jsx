@@ -13,6 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import DeliveryManDashboard from './pages/Dashboard/DeliveryManDashboard'
 import OrderRecord from './pages/RecordOrder/orderRecord'
 import Feedback from './pages/Feedback/Feedback'
+import Vouchers from './pages/Vouchers/Vouchers'
 
 const App = () => {
 
@@ -35,6 +36,7 @@ const App = () => {
           <Route path='/dashboard' element={<DeliveryManDashboard/>}/>
           <Route path='/past-order' element={<OrderRecord/>}/>
           <Route path='/feedback/:orderId' element={<Feedback/>}/>
+          <Route path='/vouchers' element={<Vouchers/>}/>
         </Routes>
       </div>
       <Footer />

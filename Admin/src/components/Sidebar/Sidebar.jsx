@@ -27,6 +27,10 @@ const Sidebar = () => {
                 <img src={assets.feedback} alt="" width="40px" height="35px"/>
                 <p>Customer Feedback</p>
             </NavLink>
+            <NavLink to='/promocode-create' className='sidebar-option'>
+                <img src={assets.promocode} alt="" width="40px" height="35px"/>
+                <p>Promocode</p>
+            </NavLink>
         </div>
       
     </div>

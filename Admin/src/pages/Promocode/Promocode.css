@@ -1,0 +1,38 @@
+.promo-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .promo-form input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .promo-form button {
+    width: 100%;
+    padding: 10px;
+    background: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .promo-form button:hover {
+    background: #218838;
+  }
+  
+  .message {
+    color: #28a745;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
