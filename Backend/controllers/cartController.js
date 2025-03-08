@@ -28,7 +28,6 @@ const addItemToCart = async (req, res) => {
   try {
     const { userId, itemId, quantity } = req.body;
 
-    // Ensure the item exists
     const item = await ItemModel.findById(itemId);
     if (!item) {
       return res.status(404).json({ message: "Item not found" });
@@ -39,14 +38,12 @@ const addItemToCart = async (req, res) => {
       return res.status(400).json({ message: "Invalid quantity" });
     }
 
-    // Find or create a cart for the user
     let cart = await CartModel.findOne({ userId }).populate("items.itemId");
 
     if (!cart) {
       cart = new CartModel({ userId, items: [], totalPrice: 0 });
     }
 
-    // Check if the item already exists in the cart
     const existingItem = cart.items.find((i) => i.itemId._id.toString() === itemId);
     if (existingItem) {
       existingItem.quantity += parsedQuantity;
@@ -63,7 +60,6 @@ const addItemToCart = async (req, res) => {
     }
     cart.totalPrice = totalPrice;
 
-    // Save the cart
     await cart.save();
     res.status(200).json(cart);
   } catch (error) {
@@ -72,7 +68,6 @@ const addItemToCart = async (req, res) => {
 };
 
 
-// Remove item from cart
 const removeItemFromCart = async (req, res) => {
   try {
     const { userId, itemId } = req.body;
@@ -84,14 +79,10 @@ const removeItemFromCart = async (req, res) => {
 
     cart.items = cart.items.filter((i) => i.itemId._id.toString() !== itemId);
 
-
-
-    // Recalculate total price
     cart.totalPrice = cart.items.reduce((total, i) => {
       return total + i.itemId.price * i.quantity;
     }, 0);
 
-    // Save the cart
     await cart.save();
     res.status(200).json(cart);
   } catch (error) {
@@ -99,7 +90,6 @@ const removeItemFromCart = async (req, res) => {
   }
 };
 
-// Update item quantity in cart
 const updateItemQuantity = async (req, res) => {
   try {
     const { userId, itemId, quantity } = req.body;
@@ -109,17 +99,13 @@ const updateItemQuantity = async (req, res) => {
       return res.status(404).json({ message: "Cart not found" });
     }
 
-    // Find the item in the cart
+  
     const item = cart.items.find((i) => i.itemId._id.toString() === itemId);
     if (item) {
       item.quantity = quantity;
 
-      // Recalculate total price
       cart.totalPrice = cart.items.reduce((total, i) => total + i.itemId.price * i.quantity, 0);
 
-      console.log("CART:" + cart);
-
-      // Save the cart
       await cart.save();
       res.status(200).json(cart);
     } else {

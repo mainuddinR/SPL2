@@ -65,7 +65,7 @@ const DeliveryManAdd = ({ url }) => {
       setDeliveryMen(response.data);
       setShowList(true);
     } catch (error) {
-      console.log(error);
+      console.log("Fetch: ", error);
     }
   };
 
@@ -103,8 +103,17 @@ const DeliveryManAdd = ({ url }) => {
                 <th>Status</th>
               </tr>
             </thead>
-            <tbody>
+            {/* <tbody>
               {deliveryMen.map((man) => (
+                <tr key={man._id}>
+                  <td>{man.user.name}</td>
+                  <td>{man.user.email}</td>
+                  <td>{man.status}</td>
+                </tr>
+              ))}
+            </tbody> */}
+            <tbody>
+              {deliveryMen.filter(man => man.user).map((man) => (
                 <tr key={man._id}>
                   <td>{man.user.name}</td>
                   <td>{man.user.email}</td>
