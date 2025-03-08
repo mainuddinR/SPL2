@@ -5,9 +5,10 @@ import orderModel from '../models/orderModel.js'
 // Get all delivery men
 const getAllDeliveryMen = async (req, res) => {
   try {
-    const deliveryMen = await deliveryMan.find().populate("user", "name email"); // Populate user info
+    const deliveryMen = await deliveryMan.find().populate("user", "name email");
     res.status(200).json(deliveryMen);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Error fetching delivery men", error });
   }
 };
@@ -53,7 +54,7 @@ const findByUserEmail = async (req, res) => {
 
 const getAssignedOrders = async (req, res) => {
   try {
-    const userId = req.body.userId; // Authenticated user ID
+    const userId = req.body.userId; 
 
     const deliveryman = await deliveryMan.findOne({ user: userId });
 

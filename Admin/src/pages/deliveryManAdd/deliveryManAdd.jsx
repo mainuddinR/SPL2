@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './deliveryManAdd.css';
@@ -10,6 +10,8 @@ const DeliveryManAdd = ({ url }) => {
   const [otp, setOtp] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [timer, setTimer] = useState(300);
+  const [deliveryMen, setDeliveryMen] = useState([]);
+  const [showList, setShowList] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,7 +25,7 @@ const DeliveryManAdd = ({ url }) => {
       startTimer();
     } catch (error) {
       console.log(error);
-      //toast.error('Failed to send OTP');
+      toast.error('Failed to send OTP');
     }
   };
 
@@ -57,6 +59,16 @@ const DeliveryManAdd = ({ url }) => {
     }, 1000);
   };
 
+  const fetchDeliveryMen = async () => {
+    try {
+      const response = await axios.get(`${url}/api/deliveryMan/get`);
+      setDeliveryMen(response.data);
+      setShowList(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="delivery-man-add">
       <h2>Register Delivery Man</h2>
@@ -78,6 +90,31 @@ const DeliveryManAdd = ({ url }) => {
           </>
         )}
       </form>
+      <button className="show-list-btn" onClick={fetchDeliveryMen}>Show Delivery Men</button>
+
+      {showList && (
+        <div className="delivery-men-list">
+          <h3>Delivery Men List</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {deliveryMen.map((man) => (
+                <tr key={man._id}>
+                  <td>{man.user.name}</td>
+                  <td>{man.user.email}</td>
+                  <td>{man.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

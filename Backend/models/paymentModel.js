@@ -5,7 +5,6 @@ const paymentSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: true },
   amount: { type: Number, required: true },
   paymentMethod: { type: String, enum: ['cash', 'online'], required: true },
-  status: { type: String, enum: ['pending', 'paid', 'failed'], default: 'pending' },
   transactionId: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }
 });

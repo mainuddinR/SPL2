@@ -429,8 +429,6 @@
     z-index: 1000;
     transition: all 0.3s ease;
 }
-
-/* Transparent navbar for logged-in users */
 .navbar.logged-in {
     background-color: transparent;
     box-shadow: none;
@@ -465,14 +463,13 @@
     transition: color 0.3s;
 }
 
-/* Menu items for logged-in state (higher contrast for transparent background) */
 .navbar.logged-in .navbar-menu a {
     color: #3a4567;
     font-weight: 600;
 }
 
 .navbar-menu a:hover {
-    color: tomato;
+    color: rgb(145, 78, 68);
 }
 
 .navbar-menu .active {
@@ -522,7 +519,7 @@
 }
 
 .navbar button:hover {
-    background-color: tomato;
+    background-color: rgb(26, 60, 26);
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(255, 99, 71, 0.2);

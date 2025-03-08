@@ -9,6 +9,7 @@ import DeliveryManAdd from './pages/deliveryManAdd/deliveryManAdd'
 import { ToastContainer } from 'react-toastify';
 import CustomerFeedback from './pages/CustomerFeedback/CustomerFeedback'
 import Promocode from './pages/Promocode/Promocode'
+import PaymentHistory from './pages/paymentHistory/paymentHistory'
 
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/deliveryManRegister" element={<DeliveryManAdd url={url}/>}/>
           <Route path='/customer-feedback' element={<CustomerFeedback url={url}/>}/>
           <Route path='/promocode-create' element={<Promocode/>}/>
+          <Route path='/payment-history' element={<PaymentHistory url={url}/>}/>
         </Routes>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import itemModel from "../models/AdminModel.js"
+import itemModel from "../models/itemModel.js"
 import fs from 'fs'
 
 

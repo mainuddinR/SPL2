@@ -6,7 +6,6 @@ const itemRouter = express.Router();
 
 
 //image storage engine
-
 const storage = multer.diskStorage({
     destination:"uploads",
     filename:(req,file,cb)=>{

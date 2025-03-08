@@ -4,8 +4,6 @@ import authMiddleware from "../middleware/auth.js"
 
 const orderRouter = express.Router();
 
-//orderRouter.put('/assignDeliveryPersonnel/:orderId', assignDeliveryPersonnel);
-
 orderRouter.post('/place',authMiddleware,placeOrder);
 orderRouter.post('/verify',verifyOrder);
 orderRouter.post('/userorders',authMiddleware,userOrders)
