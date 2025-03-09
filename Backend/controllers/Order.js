@@ -1,8 +1,10 @@
 import orderModel from '../models/orderModel.js';
-//import userModel from '../models/userModel.js'; 
 import DeliveryMan from '../models/deliveryManModel.js'
 import Stripe from 'stripe'
 import cartModel from '../models/cartModel.js';
+import userModel from '../models/userModel.js';
+import nodemailer from "nodemailer";
+import paymentModel from '../models/paymentModel.js';
 
 const stripe =new Stripe(process.env.STRIPE_SECRET_KEY)
 
@@ -18,14 +20,22 @@ const placeOrder = async (req, res) => {
     });
 
     await newOrder.save();
-    
-    await cartModel.findOneAndDelete({userId:req.body.userId});
+    await cartModel.findOneAndDelete({ userId: req.body.userId });
 
-    if (!req.body.payment) {//if offline
+    if (!req.body.payment) { // Offline payment
+      const newPayment = new paymentModel({
+        orderId: newOrder._id,
+        userId: req.body.userId,
+        amount: req.body.amount,
+        paymentMethod: "cash",
+        transactionId: "N/A" 
+      });
+
+      await newPayment.save();
       return res.json({ success: true, message: "Order placed successfully!" });
     }
 
-    // Online payment... Stripe Session 
+    // Online payment - Stripe Session 
     const line_items = req.body.items.map((item) => ({
       price_data: {
         currency: "inr",
@@ -49,6 +59,7 @@ const placeOrder = async (req, res) => {
       mode: "payment",
       success_url: `${frontend_url}/verify?success=true&orderId=${newOrder._id}`,
       cancel_url: `${frontend_url}/verify?success=false&orderId=${newOrder._id}`,
+      client_reference_id: newOrder._id.toString(), // Webhook-
     });
 
     res.json({ success: true, session_url: session.url });
@@ -108,7 +119,12 @@ const listOrders = async (req,res) => {
 //update order status
 const updateStatus = async (req, res) => {
       try{
-          await orderModel.findByIdAndUpdate(req.body.orderId,{status:req.body.status})
+          if(req.body.status==='Delivered'){
+            await orderModel.findByIdAndUpdate(req.body.orderId,{status:req.body.status,payment:true})
+          }
+           else{
+            await orderModel.findByIdAndUpdate(req.body.orderId,{status:req.body.status})
+           }
           res.json({success:true,message:"Status Updated"})
       }catch(error){
         console.log(error);
@@ -137,6 +153,13 @@ const assignDeliveryMan = async (req, res) => {
       const randomDeliveryMan = activeDeliveryMen[Math.floor(Math.random() * activeDeliveryMen.length)];
 
       const order = await orderModel.findByIdAndUpdate(orderId, { assignedDeliveryMan: randomDeliveryMan._id }, { new: true });
+
+
+      const user = await DeliveryMan.findById(randomDeliveryMan._id).populate("user");
+
+      let transporter = nodemailer.createTransport({ service: "gmail", auth: { user: "mainuddin01718887159@gmail.com", pass: "dxxstvxdnzwvbqww" } });
+
+      await transporter.sendMail({ to: user.user.email, subject: "Order allocated", text: `You are assigned orderId: ${orderId}` });
 
       await DeliveryMan.findByIdAndUpdate(randomDeliveryMan._id, { status: "allocated" });
 

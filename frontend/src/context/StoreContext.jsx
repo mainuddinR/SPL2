@@ -142,6 +142,20 @@ const StoreContextProvider = (props) => {
     //     console.log(userData);
     // },[userData])
 
+    const [promos, setPromos] = useState([]);
+    useEffect(() => {
+        const fetchPromos = async () => {
+          try {
+            const response = await axios.get(url+"/api/promos/");
+            setPromos(response.data);
+          } catch (error) {
+            console.error("Error fetching promo codes");
+          }
+        };
+    
+        fetchPromos();
+      }, []);
+
     const contextValue = {
         food_list,
         cartItems,
@@ -158,7 +172,10 @@ const StoreContextProvider = (props) => {
         role,
         setUserData,
         userData,
-        fetchCartData
+        fetchCartData,
+        promos, 
+        setPromos,
+        setTotalPrice 
     };
 
     return (

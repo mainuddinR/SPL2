@@ -14,6 +14,8 @@ import DeliveryManDashboard from './pages/Dashboard/DeliveryManDashboard'
 import OrderRecord from './pages/RecordOrder/orderRecord'
 import Feedback from './pages/Feedback/Feedback'
 import Vouchers from './pages/Vouchers/Vouchers'
+import Header from './components/Header/Header'
+import ExploreMenu from './components/ExploreMenu/ExploreMenu'
 
 const App = () => {
 
@@ -37,6 +39,8 @@ const App = () => {
           <Route path='/past-order' element={<OrderRecord/>}/>
           <Route path='/feedback/:orderId' element={<Feedback/>}/>
           <Route path='/vouchers' element={<Vouchers/>}/>
+          <Route path='/' element={<Header/>}/>
+          <Route path='/menu' element={<ExploreMenu/>}/>
         </Routes>
       </div>
       <Footer />

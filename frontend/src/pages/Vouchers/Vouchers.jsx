@@ -5,21 +5,24 @@ import { useContext } from "react";
 import { StoreContext } from "../../context/StoreContext";
 
 const Vouchers = () => {
-  const [promos, setPromos] = useState([]);
-  const {url} = useContext(StoreContext);
+  //const [promos, setPromos] = useState([]);
+  const {url,promos, setPromos} = useContext(StoreContext);
 
-  useEffect(() => {
-    const fetchPromos = async () => {
-      try {
-        const response = await axios.get(url+"/api/promos/");
-        setPromos(response.data);
-      } catch (error) {
-        console.error("Error fetching promo codes");
-      }
-    };
+  // useEffect(() => {
+  //   const fetchPromos = async () => {
+  //     try {
+  //       const response = await axios.get(url+"/api/promos/");
+  //       setPromos(response.data);
+  //       //setPromoList(response.data);
 
-    fetchPromos();
-  }, []);
+  //     } catch (error) {
+  //       console.error("Error fetching promo codes");
+  //     }
+  //   };
+
+  //   fetchPromos();
+  // }, []);
+  // setPromoList(promos);
 
   return (
     <div className="promo-container">

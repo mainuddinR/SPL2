@@ -20,16 +20,6 @@ const Orders = ({ url }) => {
     }
   };
 
-  // const statushandler = async (event ,orderId) =>{
-  //    const response = await axios.post(url+"/api/orders/status",{
-  //     orderId,
-  //     status:event.target.value
-  //    })
-  //    if(response.data.success){
-  //      await fetchAllorders();
-  //    }
-  // }
-
   const removeOrder = (orderId) => {
     setOrders(orders.filter(order => order._id !== orderId));
   };

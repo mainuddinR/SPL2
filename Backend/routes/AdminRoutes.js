@@ -1,12 +1,11 @@
 import express from 'express'
-import { addItem,listItem,removeItem } from '../controllers/AdminController.js'
+import { addItem,listItem,removeItem } from '../controllers/Admin.js'
 import multer from "multer"
 
 const itemRouter = express.Router();
 
 
 //image storage engine
-
 const storage = multer.diskStorage({
     destination:"uploads",
     filename:(req,file,cb)=>{

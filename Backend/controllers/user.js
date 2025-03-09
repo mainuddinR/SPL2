@@ -114,64 +114,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-
-
-
-//end
-// const registerUser = async (req, res) => {
-//   const regUser = req.body;
-
-//   try {
-//       const exists = await userModel.findOne({ email: regUser.email });
-//       if (exists) {
-//           return res.json({ success: false, message: "User already exists" });
-//       }
-
-//       if (!validator.isEmail(regUser.email)) {
-//           return res.json({ success: false, message: "Please enter a valid email" });
-//       }
-
-//       if (regUser.password.length < 8) {
-//           return res.json({ success: false, message: "Please enter a strong password" });
-//       }
-
-//       const salt = await bcrypt.genSalt(10);
-//       const hashedPassword = await bcrypt.hash(regUser.password, salt);
-//       regUser.password = hashedPassword;
-
-//       const newUser = new userModel({
-//           name: regUser.name,
-//           email: regUser.email,
-//           password: regUser.password,
-//           phone: regUser.phone||'',
-//           address: regUser.address||'',
-//           role: regUser.role || 'customer' 
-//       });
-
-//       const user = await newUser.save();
-
-//       // Generate JWT token
-//       const token = createToken(user._id);
-
-//       //If user role is delivery_man
-//       if (regUser.role === "delivery_man") {
-//         try {
-//           const response = await axios.post(
-//             "http://localhost:4000/api/deliveryMan/add",
-//             { name: regUser.name, user: user._id, status: "active" }
-//           );
-//         } catch (error) {
-//           console.error("Error adding delivery man:", error.response?.data || error.message);
-//         }
-//       }
-
-//       res.json({ success: true, token });
-//   } catch (error) {
-//       console.log(error);
-//       res.json({ success: false, message: "Error" });
-//   }
-// };
-
 const getUserProfile = async (req, res) => {
   try {
     const user = await userModel.findById(req.body.userId);
@@ -239,7 +181,6 @@ const updatePassword = async (req, res) => {
 };
 
 //reset password
-//const otpStore = {};
 
 const sendOtp = async (req, res) => {
   const { email } = req.body;
@@ -265,6 +206,5 @@ const verifyOtp = async (req, res) => {
   delete otpStore[email];
   res.json({ success: true });
 };
-
 
 export { loginUser, registerUser, getUserProfile, updateUserProfile, updatePassword, getUserList, sendOtp, verifyOtp, sendOtpForRegister };

@@ -1,9 +1,9 @@
 import  express  from "express";
-import { processPayment, verifyPayment } from "../controllers/Payment.js";
+import { paymentRecord, stripeWebhook,} from "../controllers/Payment.js";
 
 const paymentRouter = express.Router();
 
-paymentRouter.post('/processPayment',processPayment);
-paymentRouter.get('/verifyPayment/:paymentId',verifyPayment);
+paymentRouter.get('/record',paymentRecord);
+paymentRouter.post('/webhook', stripeWebhook); 
 
 export default paymentRouter;
