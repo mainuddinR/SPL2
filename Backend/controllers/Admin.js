@@ -25,7 +25,7 @@ const addItem = async(req,res) => {
     }
 };
 
-//list item
+//get list item
 const listItem = async (req,res) => {
     try{
         const items = await itemModel.find({});

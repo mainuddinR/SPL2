@@ -181,7 +181,6 @@ const updatePassword = async (req, res) => {
 };
 
 //reset password
-//const otpStore = {};
 
 const sendOtp = async (req, res) => {
   const { email } = req.body;
@@ -207,6 +206,5 @@ const verifyOtp = async (req, res) => {
   delete otpStore[email];
   res.json({ success: true });
 };
-
 
 export { loginUser, registerUser, getUserProfile, updateUserProfile, updatePassword, getUserList, sendOtp, verifyOtp, sendOtpForRegister };
